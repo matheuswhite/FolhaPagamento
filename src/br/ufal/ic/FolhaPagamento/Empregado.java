@@ -9,6 +9,8 @@ public class Empregado {
 	private int id;
 	private String nome;
 	private String endereco;
+	private boolean sindicato;
+	private int matriculaSindicato;
 	
 	private double salarioBruto;
 	private double salarioLiquido;
@@ -30,7 +32,28 @@ public class Empregado {
 		this.pontoFim = new HashMap<Integer , Date>();
 		
 		this.salarioTotal = new HashMap<String, Double>();
+		
+		this.sindicato = false;
 	} 
+	
+	
+	
+	
+	public boolean isSindicato() {
+		return this.sindicato;
+	}
+	
+	public void setSindicato(boolean sindicato) {
+		this.sindicato = sindicato;
+	}
+	
+	public int getMatricula() {
+		return this.matriculaSindicato;
+	}
+	
+	public void setMatricula(int matricula) {
+		this.matriculaSindicato = matricula;
+	}
 	
 	public double getSalarioTotal(String mes) {
 		return this.salarioTotal.get(mes);
@@ -39,6 +62,10 @@ public class Empregado {
 	public void setSalarioTotal(String mes, double valor) {
 		this.salarioTotal.put(mes, Double.valueOf(valor));
 	}
+	
+	
+	
+	
 	
 	public void baterPonto(Date dateInicio, Date dateFim) {
 		this.pontoInicio.put(numPontos, dateInicio);

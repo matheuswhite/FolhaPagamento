@@ -30,9 +30,18 @@ public class Sindicato {
 	}
 	
 	public void addAssociado(Empregado empregado) {
-		int i = gerarId(this.limiteAssociados);
 		
-		this.associados.put(i, empregado);
+		if(!empregado.isSindicato()) {
+			int id = gerarId(this.limiteAssociados);
+		
+			this.associados.put(id, empregado);
+			
+			empregado.setSindicato(true);
+			empregado.setMatricula(id);
+		}
+		else {
+			// erro msg
+		}
 	}
 	
 	protected boolean findAssociado(int i) {
