@@ -4,7 +4,6 @@ public class Horista extends Empregado{
 	private double salarioPorHora;
 	private int horasTabalhadas;
 	private int horasExtras;
-	//sexta-feira
 	
 	public Horista(String nome, String endereco, int id, double salarioPorHora) {
 		super(nome, endereco, id);
