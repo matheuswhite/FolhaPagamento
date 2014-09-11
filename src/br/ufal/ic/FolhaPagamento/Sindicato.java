@@ -8,10 +8,14 @@ import java.util.Random;
 public class Sindicato {
 	private Map<Integer,Empregado> associados;
 	private final int limiteAssociados = 2000;
+	private final double taxaFixa = 100.00;
 	
 	public Sindicato() {
 		this.associados = new HashMap<Integer, Empregado>();
 	}
+	
+	
+	
 	
 	protected int gerarId(int limiteAssociados) {
 		int id = 0;
@@ -54,5 +58,19 @@ public class Sindicato {
 		}
 		
 		return find;
+	}
+	
+	public void cobrarTaxaFixa() {
+		for(int x = 0; x < this.associados.size(); ++x) {
+			if(this.associados.containsKey(x)) {
+				Empregado empregado = this.associados.get(x); 
+				empregado.salarioLiquido = empregado.salarioBruto - this.taxaFixa;
+			}
+		}
+	}
+	
+	public void cobrarTaxaExtra(double valor, int matricula) {
+		Empregado empregado = this.associados.get(matricula);
+		empregado.salarioProximoMes -= valor;
 	}
 }
