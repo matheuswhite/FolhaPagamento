@@ -1,6 +1,7 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +13,9 @@ public class Empregado {
 	private boolean sindicato;
 	private int matriculaSindicato;
 	
-	private double salarioBruto;
-	private double salarioLiquido;
-	private Map<String, Double> salarioTotal;
+	protected double salarioBruto;
+	protected double salarioLiquido;
+	protected double salarioProximoMes;
 	
 	private Map<Integer, Date> pontoInicio;
 	private Map<Integer, Date> pontoFim;
@@ -31,7 +32,7 @@ public class Empregado {
 		this.pontoInicio = new HashMap<Integer, Date>();
 		this.pontoFim = new HashMap<Integer , Date>();
 		
-		this.salarioTotal = new HashMap<String, Double>();
+		this.salarioProximoMes = 0;
 		
 		this.sindicato = false;
 	} 
@@ -53,14 +54,6 @@ public class Empregado {
 	
 	public void setMatricula(int matricula) {
 		this.matriculaSindicato = matricula;
-	}
-	
-	public double getSalarioTotal(String mes) {
-		return this.salarioTotal.get(mes);
-	}
-	
-	public void setSalarioTotal(String mes, double valor) {
-		this.salarioTotal.put(mes, Double.valueOf(valor));
 	}
 	
 	
