@@ -101,6 +101,8 @@ public class Pagamento {
 			empregado.setMetodoPagamento(metodoPagamento);
 			empregado.AssociarAoSindicato(pertenceSindicato, matricula);
 			this.sindicato.setTaxa(taxaSindical, matricula);
+			
+			this.listAcoes.add("AltEmpregado");
 		}
 		else {
 			//erro msg

@@ -8,8 +8,6 @@ import java.util.Random;
 public class Sindicato {
 	private Map<Integer,Empregado> associados;
 	private final int limiteAssociados = 2000;
-	
-	//mudar para hashmap
 	private Map<Empregado, Double> taxaFixa;
 	
 	public Sindicato() {
@@ -63,7 +61,7 @@ public class Sindicato {
 		return find;
 	}
 	
-	//
+	
 	public void setTaxa(double taxa, int matricula) {
 		if(this.associados.containsKey(matricula)) {
 			Empregado empregado = this.associados.get(matricula);
