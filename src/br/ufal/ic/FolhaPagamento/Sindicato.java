@@ -72,5 +72,6 @@ public class Sindicato {
 	public void cobrarTaxaExtra(double valor, int matricula) {
 		Empregado empregado = this.associados.get(matricula);
 		empregado.salarioProximoMes -= valor;
+		empregado.debitoProximoMes = true;
 	}
 }

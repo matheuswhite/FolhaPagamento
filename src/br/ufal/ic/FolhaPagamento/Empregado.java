@@ -12,14 +12,15 @@ public class Empregado {
 	private String endereco;
 	private boolean sindicato;
 	private int matriculaSindicato;
+	private String diaPagamento;
 	
 	protected double salarioBruto;
 	protected double salarioLiquido;
 	protected double salarioProximoMes;
+	protected boolean debitoProximoMes = false;
 	
-	private Map<Integer, Date> pontoInicio;
-	private Map<Integer, Date> pontoFim;
-	private int numPontos;
+	protected Date pontoInicio;
+	protected Date pontoFim;
 	
 	public Empregado(String nome, String endereco, int id) {
 		this.id = id;
@@ -27,10 +28,9 @@ public class Empregado {
 		this.endereco = endereco;
 		this.salarioBruto = 0.0;
 		this.salarioLiquido = 0.0;
-		this.numPontos = 0;
 		
-		this.pontoInicio = new HashMap<Integer, Date>();
-		this.pontoFim = new HashMap<Integer , Date>();
+		this.pontoInicio = new Date();
+		this.pontoFim = new Date();
 		
 		this.salarioProximoMes = 0;
 		
@@ -38,7 +38,19 @@ public class Empregado {
 	} 
 	
 	
+	protected void calcularSalarioLiquido() {
+		 if(this.debitoProximoMes) {
+			 this.salarioLiquido += this.salarioProximoMes;
+		 }
+	}
 	
+	protected void setDiaPagamento(String date) {
+		this.diaPagamento = date;
+	}
+	
+	public String getDiaPagamento() {
+		return this.diaPagamento;
+	}
 	
 	public boolean isSindicato() {
 		return this.sindicato;
@@ -61,8 +73,7 @@ public class Empregado {
 	
 	
 	public void baterPonto(Date dateInicio, Date dateFim) {
-		this.pontoInicio.put(numPontos, dateInicio);
-		this.pontoFim.put(numPontos, dateFim);
-		this.numPontos++;
+		this.pontoInicio = dateInicio;
+		this.pontoFim = dateFim;
 	}
 }

@@ -1,5 +1,8 @@
 package br.ufal.ic.FolhaPagamento;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Horista extends Empregado{
 	private double salarioPorHora;
 	private int horasTabalhadas;
@@ -9,7 +12,14 @@ public class Horista extends Empregado{
 		super(nome, endereco, id);
 		
 		this.salarioPorHora = salarioPorHora;
-		this.horasTabalhadas = 0;
+		this.setHorasTrabalhadas();
+		
+		this.setDiaPagamento("SEXTA");
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void setHorasTrabalhadas() {
+		this.horasTabalhadas = this.pontoInicio.getHours() - this.pontoFim.getHours();
 	}
 	
 	public void setSalarioBruto() {

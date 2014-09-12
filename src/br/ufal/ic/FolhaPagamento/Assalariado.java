@@ -12,6 +12,8 @@ public abstract class Assalariado extends Empregado{
 		super(nome, endereco, id);
 		
 		this.salarioBruto = SalarioFixo;
+		
+		this.setDiaPagamento("ULTIMO_DIA_UTIL");
 	}
 	
 	public abstract void registrarVenda(Date date, double valor);

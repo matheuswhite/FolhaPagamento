@@ -18,7 +18,10 @@ public class Comissionados extends Assalariado {
 		vendas = new HashMap<Date, List<Double> >();
 		
 		this.calcular_Salario2Semanas();
+		
+		this.setDiaPagamento("CADA_DUAS_SEXTA");
 	}
+	
 	
 	public void calcular_Salario2Semanas() {
 		this.salario2Semanas = this.salarioBruto / 2;
@@ -43,5 +46,14 @@ public class Comissionados extends Assalariado {
 	
 	public void calcularComissao(double valor) {
 		this.salarioBruto += valor * this.comissao;
+	}
+
+
+	@Override
+	protected void calcularSalarioLiquido() {
+		this.salarioLiquido += this.salario2Semanas;
+		if(this.debitoProximoMes) {
+			this.salarioLiquido += this.salarioProximoMes;
+		}
 	}
 }
