@@ -91,10 +91,20 @@ public class Pagamento {
 	}
 	
 	//adicionar mudança de matricula
-	public void AlterarEmpregado(String nome, String enredeco, 
+	public void AlterarEmpregado(String nome, String endereco, 
 			Empregado empregado, MetodoPagamento metodoPagamento, 
 			boolean pertenceSindicato, int matricula, double taxaSindical) {
 		
+		if(isRegistrado(empregado)) {
+			empregado.setNome(nome);
+			empregado.setEndereco(endereco);
+			empregado.setMetodoPagamento(metodoPagamento);
+			empregado.AssociarAoSindicato(pertenceSindicato, matricula);
+			this.sindicato.setTaxa(taxaSindical, matricula);
+		}
+		else {
+			//erro msg
+		}
 	}
 	
 	public void rodarFolhaPagamento() {

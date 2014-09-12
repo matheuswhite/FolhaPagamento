@@ -10,10 +10,11 @@ public class Sindicato {
 	private final int limiteAssociados = 2000;
 	
 	//mudar para hashmap
-	private double taxaFixa = 100.00;
+	private Map<Empregado, Double> taxaFixa;
 	
 	public Sindicato() {
 		this.associados = new HashMap<Integer, Empregado>();
+		this.taxaFixa = new HashMap<Empregado, Double>();
 	}
 	
 	
@@ -62,11 +63,19 @@ public class Sindicato {
 		return find;
 	}
 	
+	//
+	public void setTaxa(double taxa, int matricula) {
+		if(this.associados.containsKey(matricula)) {
+			Empregado empregado = this.associados.get(matricula);
+			this.taxaFixa.put(empregado, taxa);
+		}
+	}
+	
 	public void cobrarTaxaFixa() {
 		for(int x = 0; x < this.associados.size(); ++x) {
 			if(this.associados.containsKey(x)) {
 				Empregado empregado = this.associados.get(x); 
-				empregado.salarioLiquido = empregado.salarioBruto - this.taxaFixa;
+				empregado.salarioLiquido = empregado.salarioBruto - this.taxaFixa.get(empregado);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,19 +74,20 @@ public class Empregado {
 	
 	
 	public void setNome(String nome) {
-		
+		this.nome = nome;
 	}
 	
 	public void setEndereco(String endereco) {
-		
+		this.endereco = endereco;
 	}
 	
 	public void setMetodoPagamento(MetodoPagamento metodo) {
-		
+		this.metodoPagamento = metodo;
 	}
 	
-	public void AssociarAoSindicato(boolean pertence, double taxaSindical, int matricula) {
-		
+	public void AssociarAoSindicato(boolean pertence, int matricula) {
+		this.sindicato = pertence;
+		this.matriculaSindicato = matricula;
 	}
 	
 	
