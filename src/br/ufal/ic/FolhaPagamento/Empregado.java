@@ -1,10 +1,11 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import br.ufal.ic.FolhaPagamento.Interfaces.MetodoPagamento;
 
 public class Empregado {
 	private int id;
@@ -13,6 +14,7 @@ public class Empregado {
 	private boolean sindicato;
 	private int matriculaSindicato;
 	private String diaPagamento;
+	private MetodoPagamento metodoPagamento;
 	
 	protected double salarioBruto;
 	protected double salarioLiquido;
@@ -69,6 +71,22 @@ public class Empregado {
 	}
 	
 	
+	
+	public void setNome(String nome) {
+		
+	}
+	
+	public void setEndereco(String endereco) {
+		
+	}
+	
+	public void setMetodoPagamento(MetodoPagamento metodo) {
+		
+	}
+	
+	public void AssociarAoSindicato(boolean pertence, double taxaSindical, int matricula) {
+		
+	}
 	
 	
 	

@@ -8,7 +8,9 @@ import java.util.Random;
 public class Sindicato {
 	private Map<Integer,Empregado> associados;
 	private final int limiteAssociados = 2000;
-	private final double taxaFixa = 100.00;
+	
+	//mudar para hashmap
+	private double taxaFixa = 100.00;
 	
 	public Sindicato() {
 		this.associados = new HashMap<Integer, Empregado>();
