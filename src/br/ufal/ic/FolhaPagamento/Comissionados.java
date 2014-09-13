@@ -18,8 +18,6 @@ public class Comissionados extends Assalariado {
 		vendas = new HashMap<Date, List<Double> >();
 		
 		this.calcular_Salario2Semanas();
-		
-		this.setDiaPagamento("CADA_DUAS_SEXTA");
 	}
 	
 	

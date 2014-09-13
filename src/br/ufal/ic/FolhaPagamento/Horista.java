@@ -13,8 +13,6 @@ public class Horista extends Empregado{
 		
 		this.salarioPorHora = salarioPorHora;
 		this.setHorasTrabalhadas();
-		
-		this.setDiaPagamento("SEXTA");
 	}
 	
 	@SuppressWarnings("deprecation")

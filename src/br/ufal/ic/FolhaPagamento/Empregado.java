@@ -14,7 +14,6 @@ public class Empregado {
 	private String endereco;
 	private boolean sindicato;
 	private int matriculaSindicato;
-	private String diaPagamento;
 	private MetodoPagamento metodoPagamento;
 	
 	protected double salarioBruto;
@@ -47,20 +46,8 @@ public class Empregado {
 		 }
 	}
 	
-	protected void setDiaPagamento(String date) {
-		this.diaPagamento = date;
-	}
-	
-	public String getDiaPagamento() {
-		return this.diaPagamento;
-	}
-	
 	public boolean isSindicato() {
 		return this.sindicato;
-	}
-	
-	public void setSindicato(boolean sindicato) {
-		this.sindicato = sindicato;
 	}
 	
 	public int getMatricula() {
