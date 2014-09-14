@@ -27,9 +27,9 @@ public class Main {
 		print("4- Lançar venda\n");
 		print("5- Lançar taxa extra\n");
 		print("6- Alterar empregado\n");
-		print("7- Rodar folha de pagamento");
-		print("8- Undo");
-		print("9- Redo");
+		print("7- Rodar folha de pagamento\n");
+		print("8- Undo\n");
+		print("9- Redo\n");
 	}
 	
 	private void addEmpregados() {
@@ -38,10 +38,10 @@ public class Main {
 		double salario;
 		int id;
 		
-		print("Nome: ");
+		print("Nome: \n");
 		nome = scan.nextLine();
 		
-		print("Endereço: ");
+		print("Endereço: \n");
 		endereco = scan.nextLine();
 		
 		print("Seu id:");
@@ -55,19 +55,19 @@ public class Main {
 		switch(entrada) {
 		case 1:
 			Horista horista = new Horista(nome, endereco, id);
-			print("Salario por hora: ");
+			print("Salario por hora: \n");
 			salario = scan.nextDouble();
 			horista.setSalarioPorHora(salario);
 			break;
 		case 2:
 			Assalariado assalariado = new Assalariado(nome, endereco, id);
-			print("Salario Fixo: ");
+			print("Salario Fixo: \n");
 			salario = scan.nextDouble();
 			assalariado.setSalarioBruto(salario);
 			break;
 		case 3:
 			Comissionados comissionados = new Comissionados(nome, endereco, id);
-			print("Salario Fixo: ");
+			print("Salario Fixo: \n");
 			salario = scan.nextDouble();
 			comissionados.setSalarioFixo(salario);
 			break;
