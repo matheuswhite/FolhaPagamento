@@ -21,6 +21,10 @@ public class Pagamento {
 		listAcoes = new ListAcoes();
 	}
 	
+	public List<Empregado> getEmpregados() {
+		return this.empregados;
+	}
+	
 	public Sindicato getSindicato() {
 		return this.sindicato;
 	}

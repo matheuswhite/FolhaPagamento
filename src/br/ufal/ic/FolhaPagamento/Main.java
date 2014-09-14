@@ -26,19 +26,19 @@ public class Main {
 	private void debug(Horista horista) {
 		print("\nHorista");
 		debugEmpregado(horista);
-		print("\nSalario por Hora: " + horista.getSalarioPorHora());
+		print("\nSalario por Hora: " + horista.getSalarioPorHora() + "\n");
 	}
 	
 	private void debug(Assalariado assalariado) {
 		print("\nAssalariado");
 		debugEmpregado(assalariado);
-		print("Salario Fixo: " + assalariado.getSalarioFixo());
+		print("\nSalario Fixo: " + assalariado.getSalarioFixo() + "\n");
 	}
 	
 	private void debug(Comissionados comissionado) {
 		print("\nComissionado");
 		debugEmpregado(comissionado);
-		print("Salario Fixo: " + comissionado.getSalarioFixo());
+		print("\nSalario Fixo: " + comissionado.getSalarioFixo() + "\n");
 	}
 	
 	private void debug(Sindicato sindicato) {
@@ -90,34 +90,67 @@ public class Main {
 		
 		switch(entrada) {
 		case 1:
+			
 			Horista horista = new Horista(nome, endereco, id);
 			print("Salario por hora: \n");
 			salario = scan.nextDouble();
 			horista.setSalarioPorHora(salario);
 			clearBuffer();
 			debug(horista);
+			this.pagamento.AdicionarEmpregado(horista);
+			
 			break;
 		case 2:
+			
 			Assalariado assalariado = new Assalariado(nome, endereco, id);
 			print("Salario Fixo: \n");
 			salario = scan.nextDouble();
 			assalariado.setSalarioBruto(salario);
 			clearBuffer();
 			debug(assalariado);
+			this.pagamento.AdicionarEmpregado(assalariado);
+			
 			break;
 		case 3:
+			
 			Comissionados comissionados = new Comissionados(nome, endereco, id);
 			print("Salario Fixo: \n");
 			salario = scan.nextDouble();
 			comissionados.setSalarioFixo(salario);
 			clearBuffer();
 			debug(comissionados);
+			this.pagamento.AdicionarEmpregado(comissionados);
+			
 			break;
 		}
 	}
 	
 	private void delEmpregados() {
+		print("Escolha o empregado a ser removido\n");
 		
+		for(int i=0; i < pagamento.getEmpregados().size(); ++i) {
+			Empregado empregado = pagamento.getEmpregados().get(i);
+			
+			print(i + "- " + empregado.getNome() + " / Id: " + empregado.getId() + "\n");
+		
+		}
+		
+		int entrada = scan.nextInt();
+		this.clearBuffer();
+		
+		Empregado empregado = pagamento.getEmpregados().get(entrada);
+		
+		this.debugEmpregado(empregado);
+		
+		print("\nDeseja mesmo remover este Empregado?\n1- Sim\t2- Não\n");
+		entrada = scan.nextInt();
+		
+		if(entrada == 1) {
+			pagamento.RemoverEmpregado(empregado);
+		}
+		else {
+			//volta para escolher outro
+		}
 	}
 	
 	private void cartaoPonto() {
@@ -151,42 +184,47 @@ public class Main {
 	public static void main(String[] args) {
 		Main window = new Main();
 		int entrada = 0;
+		boolean exit = false;
 		
-		window.menuPrincipal();
-		entrada = window.scan.nextInt();
-		window.clearBuffer();
+		while(!exit) {
+			window.menuPrincipal();
+			entrada = window.scan.nextInt();
+			window.clearBuffer();
+			
+			switch(entrada) {
+			case 1:
+				window.addEmpregados();
+				break;
+			case 2:
+				window.delEmpregados();
+				break;
+			case 3:
+				window.cartaoPonto();
+				break;
+			case 4:
+				window.lancarVenda();
+				break;
+			case 5:
+				window.taxaExtra();
+				break;
+			case 6:
+				window.alterarEmpregados();
+				break;
+			case 7:
+				window.RodarFolha();
+				break;
+			case 8:
+				window.undo();
+				break;
+			case 9:
+				window.redo();
+				break;
+			default:
+				exit = true;
+				break;
+			}
+			
+		} //while end
 		
-		switch(entrada) {
-		case 1:
-			window.addEmpregados();
-			break;
-		case 2:
-			window.delEmpregados();
-			break;
-		case 3:
-			window.cartaoPonto();
-			break;
-		case 4:
-			window.lancarVenda();
-			break;
-		case 5:
-			window.taxaExtra();
-			break;
-		case 6:
-			window.alterarEmpregados();
-			break;
-		case 7:
-			window.RodarFolha();
-			break;
-		case 8:
-			window.undo();
-			break;
-		case 9:
-			window.redo();
-			break;
-		default:
-			break;
-		}
 	}
-
 }
