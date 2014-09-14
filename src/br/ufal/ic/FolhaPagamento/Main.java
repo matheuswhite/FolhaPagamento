@@ -1,5 +1,8 @@
 package br.ufal.ic.FolhaPagamento;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,6 +19,33 @@ public class Main {
 		scan = new Scanner(System.in);
 	}
 	
+	private Date stringToDate(String string) throws ParseException {
+		Date dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(string);
+		
+		print("\ndata: " + dt.toString() + "\n");
+		
+		return dt;
+	}
+	
+	private Empregado escolhaDeEmpregado(String string) {
+		print("Escolha um empregado " + string + ": \n");
+		
+		for(int i=0; i < pagamento.getEmpregados().size(); ++i) {
+			Empregado empregado = pagamento.getEmpregados().get(i);
+			
+			print(i + "- " + empregado.getNome() + " / Id: " + empregado.getId() + "\n");
+		
+		}
+		
+		int entrada = scan.nextInt();
+		this.clearBuffer();
+		
+		Empregado empregado = pagamento.getEmpregados().get(entrada);
+		
+		this.debugEmpregado(empregado);
+		
+		return empregado;
+	}
 	
 	private void debugEmpregado(Empregado empregado) {
 		print("\nNome: " + empregado.getNome());
@@ -39,10 +69,6 @@ public class Main {
 		print("\nComissionado");
 		debugEmpregado(comissionado);
 		print("\nSalario Fixo: " + comissionado.getSalarioFixo() + "\n");
-	}
-	
-	private void debug(Sindicato sindicato) {
-		
 	}
 	
 	private void print(String mensagem) {
@@ -126,21 +152,8 @@ public class Main {
 	}
 	
 	private void delEmpregados() {
-		print("Escolha o empregado a ser removido\n");
-		
-		for(int i=0; i < pagamento.getEmpregados().size(); ++i) {
-			Empregado empregado = pagamento.getEmpregados().get(i);
-			
-			print(i + "- " + empregado.getNome() + " / Id: " + empregado.getId() + "\n");
-		
-		}
-		
-		int entrada = scan.nextInt();
-		this.clearBuffer();
-		
-		Empregado empregado = pagamento.getEmpregados().get(entrada);
-		
-		this.debugEmpregado(empregado);
+		Empregado empregado = this.escolhaDeEmpregado("a ser removido");
+		int entrada;
 		
 		print("\nDeseja mesmo remover este Empregado?\n1- Sim\t2- Não\n");
 		entrada = scan.nextInt();
@@ -153,8 +166,70 @@ public class Main {
 		}
 	}
 	
-	private void cartaoPonto() {
+	private void cartaoPonto() throws ParseException {
+		Empregado empregado = this.escolhaDeEmpregado("para lancar um ponto");
+		String dia, mes, ano, horas, minutos, segundos;
+		Date inicio, fim;
 		
+		//yyyy-MM-dd HH:mm:ss.S
+		
+		print("Entre com a data inicial: \n");
+		
+		print("Dia (00):\n");
+		dia = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Mes (00):\n");
+		mes = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Ano (0000):\n");
+		ano = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Hora (00):\n");
+		horas = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Minutos (00):\n");
+		minutos = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Segundos (00):\n");
+		segundos = scan.nextLine();
+		this.clearBuffer();
+		
+		inicio = this.stringToDate(ano + "-" + mes + "-" + dia + " " + horas + ":" + minutos + ":" + segundos + ".0");
+		
+		print("Entre com a data final: \n");
+		
+		print("Dia (00):\n");
+		dia = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Mes (00):\n");
+		mes = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Ano (0000):\n");
+		ano = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Hora (00):\n");
+		horas = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Minutos (00):\n");
+		minutos = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Segundos (00):\n");
+		segundos = scan.nextLine();
+		this.clearBuffer();
+		
+		fim = this.stringToDate(ano + "-" + mes + "-" + dia + " " + horas + ":" + minutos + ":" + segundos + ".0");
+		
+		pagamento.LancarCartaoPonto(empregado, inicio, fim);
 	}
 	
 	private void lancarVenda() {
@@ -181,7 +256,7 @@ public class Main {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		Main window = new Main();
 		int entrada = 0;
 		boolean exit = false;
