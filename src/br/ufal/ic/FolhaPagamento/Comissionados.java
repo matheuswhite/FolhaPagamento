@@ -23,6 +23,10 @@ public class Comissionados extends Assalariado {
 		super.setSalarioBruto(salarioFixo);
 	}
 	
+	public double getSalarioFixo() {
+		return this.salarioBruto;
+	}
+	
 	public void calcular_Salario2Semanas() {
 		this.salario2Semanas = this.salarioBruto / 2;
 	}

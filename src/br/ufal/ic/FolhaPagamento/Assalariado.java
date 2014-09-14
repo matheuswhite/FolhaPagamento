@@ -15,4 +15,8 @@ public class Assalariado extends Empregado{
 	public void setSalarioBruto(double salarioFixo) {
 		this.salarioBruto = salarioFixo;
 	}
+	
+	public double getSalarioFixo() {
+		return this.salarioBruto;
+	}
 }

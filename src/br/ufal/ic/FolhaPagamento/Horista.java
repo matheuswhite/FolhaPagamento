@@ -17,6 +17,10 @@ public class Horista extends Empregado{
 		this.setHorasTrabalhadas();
 	}
 	
+	public double getSalarioPorHora() {
+		return this.salarioPorHora;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void setHorasTrabalhadas() {
 		this.horasTabalhadas = this.pontoInicio.getHours() - this.pontoFim.getHours();

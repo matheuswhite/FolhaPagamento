@@ -16,8 +16,41 @@ public class Main {
 		scan = new Scanner(System.in);
 	}
 	
+	
+	private void debugEmpregado(Empregado empregado) {
+		print("\nNome: " + empregado.getNome());
+		print("\nEndereço: " + empregado.getEndereco());
+		print("\nId: " + empregado.getId());
+	}
+	
+	private void debug(Horista horista) {
+		print("\nHorista");
+		debugEmpregado(horista);
+		print("\nSalario por Hora: " + horista.getSalarioPorHora());
+	}
+	
+	private void debug(Assalariado assalariado) {
+		print("\nAssalariado");
+		debugEmpregado(assalariado);
+		print("Salario Fixo: " + assalariado.getSalarioFixo());
+	}
+	
+	private void debug(Comissionados comissionado) {
+		print("\nComissionado");
+		debugEmpregado(comissionado);
+		print("Salario Fixo: " + comissionado.getSalarioFixo());
+	}
+	
+	private void debug(Sindicato sindicato) {
+		
+	}
+	
 	private void print(String mensagem) {
 		System.out.print(mensagem);
+	}
+	
+	private void clearBuffer() {
+		scan.nextLine();
 	}
 	
 	private void menuPrincipal() {
@@ -40,9 +73,11 @@ public class Main {
 		
 		print("Nome: \n");
 		nome = scan.nextLine();
+		clearBuffer();
 		
 		print("Endereço: \n");
 		endereco = scan.nextLine();
+		clearBuffer();
 		
 		print("Seu id:");
 		id = pagamento.getSindicato().gerarId(this.limiteEmpregados);
@@ -51,6 +86,7 @@ public class Main {
 		print("Escolha o tipo de empregado\n");
 		print("1- Horista\t2- Assalariado\t3- Comissionado\n");
 		entrada = scan.nextInt();
+		clearBuffer();
 		
 		switch(entrada) {
 		case 1:
@@ -58,18 +94,24 @@ public class Main {
 			print("Salario por hora: \n");
 			salario = scan.nextDouble();
 			horista.setSalarioPorHora(salario);
+			clearBuffer();
+			debug(horista);
 			break;
 		case 2:
 			Assalariado assalariado = new Assalariado(nome, endereco, id);
 			print("Salario Fixo: \n");
 			salario = scan.nextDouble();
 			assalariado.setSalarioBruto(salario);
+			clearBuffer();
+			debug(assalariado);
 			break;
 		case 3:
 			Comissionados comissionados = new Comissionados(nome, endereco, id);
 			print("Salario Fixo: \n");
 			salario = scan.nextDouble();
 			comissionados.setSalarioFixo(salario);
+			clearBuffer();
+			debug(comissionados);
 			break;
 		}
 	}
@@ -112,6 +154,7 @@ public class Main {
 		
 		window.menuPrincipal();
 		entrada = window.scan.nextInt();
+		window.clearBuffer();
 		
 		switch(entrada) {
 		case 1:
@@ -127,7 +170,7 @@ public class Main {
 			window.lancarVenda();
 			break;
 		case 5:
-			window.lancarVenda();
+			window.taxaExtra();
 			break;
 		case 6:
 			window.alterarEmpregados();

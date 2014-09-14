@@ -75,6 +75,19 @@ public class Empregado {
 	
 	
 	
+	public String getNome() {
+		return this.nome;
+	}
+	
+	public String getEndereco() {
+		return this.endereco;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	
 	public void baterPonto(Date dateInicio, Date dateFim) {
 		this.pontoInicio = dateInicio;
 		this.pontoFim = dateFim;
