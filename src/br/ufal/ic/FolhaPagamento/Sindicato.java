@@ -41,8 +41,7 @@ public class Sindicato {
 		
 			this.associados.put(id, empregado);
 			
-			empregado.setSindicato(true);
-			empregado.setMatricula(id);
+			empregado.AssociarAoSindicato(true, id);
 		}
 		else {
 			// erro msg

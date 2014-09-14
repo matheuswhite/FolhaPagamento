@@ -54,10 +54,6 @@ public class Empregado {
 		return this.matriculaSindicato;
 	}
 	
-	public void setMatricula(int matricula) {
-		this.matriculaSindicato = matricula;
-	}
-	
 	
 	
 	public void setNome(String nome) {
