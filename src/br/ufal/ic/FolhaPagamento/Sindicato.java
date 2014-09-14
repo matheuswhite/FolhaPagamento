@@ -18,7 +18,7 @@ public class Sindicato {
 	
 	
 	
-	protected int gerarId(int limiteAssociados) {
+	public int gerarId(int limiteAssociados) {
 		int id = 0;
 		boolean exit = false;
 		Random gerador = new Random();

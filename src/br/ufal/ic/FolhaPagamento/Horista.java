@@ -8,9 +8,11 @@ public class Horista extends Empregado{
 	private int horasTabalhadas;
 	private int horasExtras;
 	
-	public Horista(String nome, String endereco, int id, double salarioPorHora) {
+	public Horista(String nome, String endereco, int id) {
 		super(nome, endereco, id);
-		
+	}
+	
+	public void setSalarioPorHora(double salarioPorHora) {
 		this.salarioPorHora = salarioPorHora;
 		this.setHorasTrabalhadas();
 	}

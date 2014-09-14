@@ -1,5 +1,6 @@
 package br.ufal.ic.FolhaPagamento;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -7,6 +8,7 @@ public class Main {
 	private Pagamento pagamento;
 	private ListAcoes acoes;
 	private Scanner scan;
+	private final int limiteEmpregados = 2000;
 	
 	public Main() {
 		pagamento = new Pagamento();
@@ -32,7 +34,19 @@ public class Main {
 	
 	private void addEmpregados() {
 		int entrada = 0;
-		Empregado empregado;
+		String nome, endereco;
+		double salario;
+		int id;
+		
+		print("Nome: ");
+		nome = scan.nextLine();
+		
+		print("Endereço: ");
+		endereco = scan.nextLine();
+		
+		print("Seu id:");
+		id = pagamento.getSindicato().gerarId(this.limiteEmpregados);
+		print(" " + id + "\n");
 		
 		print("Escolha o tipo de empregado\n");
 		print("1- Horista\t2- Assalariado\t3- Comissionado\n");
@@ -40,13 +54,22 @@ public class Main {
 		
 		switch(entrada) {
 		case 1:
-			empregado = new Horista(null, null, entrada, entrada);
+			Horista horista = new Horista(nome, endereco, id);
+			print("Salario por hora: ");
+			salario = scan.nextDouble();
+			horista.setSalarioPorHora(salario);
 			break;
 		case 2:
-			empregado = new Assalariado();
+			Assalariado assalariado = new Assalariado(nome, endereco, id);
+			print("Salario Fixo: ");
+			salario = scan.nextDouble();
+			assalariado.setSalarioBruto(salario);
 			break;
 		case 3:
-			empregado = new Comissionados(null, null, entrada, entrada);
+			Comissionados comissionados = new Comissionados(nome, endereco, id);
+			print("Salario Fixo: ");
+			salario = scan.nextDouble();
+			comissionados.setSalarioFixo(salario);
 			break;
 		}
 	}

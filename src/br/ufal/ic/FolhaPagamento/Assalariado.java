@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-public abstract class Assalariado extends Empregado{
+public class Assalariado extends Empregado{
 	
-	public Assalariado(String nome, String endereco, int id, double SalarioFixo) {
+	public Assalariado(String nome, String endereco, int id) {
 		super(nome, endereco, id);
-		
-		this.salarioBruto = SalarioFixo;
 	}
 	
-	public abstract void registrarVenda(Date date, double valor);
+	public void setSalarioBruto(double salarioFixo) {
+		this.salarioBruto = salarioFixo;
+	}
 }

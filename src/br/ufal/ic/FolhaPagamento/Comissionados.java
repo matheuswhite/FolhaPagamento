@@ -11,15 +11,17 @@ public class Comissionados extends Assalariado {
 	private Map<Date, List<Double> > vendas;
 	private double salario2Semanas;
 	
-	public Comissionados(String nome, String endereco, int id,
-			double SalarioFixo) {
-		super(nome, endereco, id, SalarioFixo);
+	public Comissionados(String nome, String endereco, int id) {
+		super(nome, endereco, id);
 		
 		vendas = new HashMap<Date, List<Double> >();
 		
 		this.calcular_Salario2Semanas();
 	}
 	
+	public void setSalarioFixo(double salarioFixo) {
+		super.setSalarioBruto(salarioFixo);
+	}
 	
 	public void calcular_Salario2Semanas() {
 		this.salario2Semanas = this.salarioBruto / 2;

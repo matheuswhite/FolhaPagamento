@@ -21,6 +21,10 @@ public class Pagamento {
 		listAcoes = new ListAcoes();
 	}
 	
+	public Sindicato getSindicato() {
+		return this.sindicato;
+	}
+	
 	private boolean isRegistrado(Empregado empregado) {
 		boolean retorno = false;
 		
@@ -68,9 +72,9 @@ public class Pagamento {
 	}
 	
 	public void LancarVenda(Empregado empregado, double venda, Date date) {
-		if(empregado instanceof Assalariado) {
+		if(empregado instanceof Comissionados) {
 			if(isRegistrado(empregado)) {
-				((Assalariado) empregado).registrarVenda(date, venda);
+				((Comissionados) empregado).registrarVenda(date, venda);
 				this.listAcoes.add("Venda");
 			}
 			else {
@@ -191,8 +195,9 @@ public class Pagamento {
 			}
 		}
 		
-		if(/*cada duas sextas*/) {
+		
+		//if(/*cada duas sextas*/) {
 			//pagar comissionados
-		}
+		//}
 	}
 }
