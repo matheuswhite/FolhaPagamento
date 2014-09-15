@@ -1,12 +1,11 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.Calendar;
+
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
-
-import br.ufal.ic.FolhaPagamento.Interfaces.MetodoPagamento;
 
 
 //associar empregado a um sindicato (m) ?!
@@ -102,7 +101,7 @@ public class Pagamento {
 	
 	//adicionar mudança de matricula
 	public void AlterarEmpregado(String nome, String endereco, 
-			Empregado empregado, MetodoPagamento metodoPagamento, 
+			Empregado empregado, String metodoPagamento, 
 			boolean pertenceSindicato, int matricula, double taxaSindical) {
 		
 		if(isRegistrado(empregado)) {
