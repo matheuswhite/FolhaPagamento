@@ -1,7 +1,6 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.Calendar;
-
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -41,7 +40,7 @@ public class Pagamento {
 	public void AdicionarEmpregado(Empregado empregado) {
 		if(!isRegistrado(empregado)) {
 			this.empregados.add(empregado);
-			this.listAcoes.add("AddEmpregado");
+			this.listAcoes.add("AddEmpregado", empregado);
 		}
 		else {
 			// erro msg
@@ -52,7 +51,7 @@ public class Pagamento {
 		if(!this.empregados.isEmpty()) {
 			if(isRegistrado(empregado)) {
 				this.empregados.remove(empregado);
-				this.listAcoes.add("DelEmpregados");
+				this.listAcoes.add("DelEmpregados", empregado);
 			}
 			else {
 				//erro msg
@@ -171,6 +170,34 @@ public class Pagamento {
 		return saida;
 	}
 	
+	
+	//fazer
+	@SuppressWarnings("deprecation")
+	private boolean is2Semana(Date date, Date inicio) {
+		boolean saida = false;
+		Date quatorze = date;
+		int d, m, a, da, ma, aa;
+		
+		
+		while(quatorze.before(inicio)) {
+			d = quatorze.getDate();
+			m = quatorze.getMonth();
+			a = quatorze.getYear();
+			
+			da = d - 14;
+			ma = m - 1;
+			aa = a - 1;
+			
+			
+			if(da <= 0) {
+				
+			}
+			quatorze.setDate(d - 14);
+		}
+		
+		return saida;
+	}
+	
 	public void rodarFolhaPagamento(Date date) {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
@@ -202,5 +229,7 @@ public class Pagamento {
 		//if(/*cada duas sextas*/) {
 			//pagar comissionados
 		//}
+		
+		this.listAcoes.add("FolhaPagamento");
 	}
 }

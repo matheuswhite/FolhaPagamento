@@ -1,18 +1,42 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.List;
+import java.util.Stack;
 import java.util.LinkedList;
 
-public class ListAcoes extends LinkedList{
-	private List<String> acoes;
+public class ListAcoes {
+	private Stack<String> acoes;
+	private Stack<String> aux;
+	private List<Empregado> empregado;
 	
 	public ListAcoes() {
-		acoes = new LinkedList<String>();
+		acoes = new Stack<String>();
+		aux = new Stack<String>();
+		
+		empregado = new LinkedList<Empregado>();
 	}
 	
-	public void add(String acao) {
+	public void add(String acao, Empregado empregado) {
 		acao.toUpperCase();
-		acoes.add(acao);
+		acoes.push(acao);
+		
+		this.empregado.add(empregado);
+	}
+	
+	public void add(String acao, Cartao cartao) {
+		
+	}
+	
+	public void add(String acao, Venda venda) {
+		
+	}
+	
+	public void add(String acao, Taxa taxa) {
+		
+	}
+	
+	public void add(String acao, FolhaPagamento folha) {
+		
 	}
 	
 	public void undo() {
