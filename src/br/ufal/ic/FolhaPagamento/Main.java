@@ -94,7 +94,7 @@ public class Main {
 	private void addEmpregados() {
 		int entrada = 0;
 		String nome, endereco;
-		double salario;
+		double salario, comissao;
 		int id;
 		
 		print("Nome: \n");
@@ -140,10 +140,17 @@ public class Main {
 		case 3:
 			
 			Comissionados comissionados = new Comissionados(nome, endereco, id);
+			
 			print("Salario Fixo: \n");
 			salario = scan.nextDouble();
 			comissionados.setSalarioFixo(salario);
 			clearBuffer();
+			
+			print("Comissao: \n");
+			comissao = scan.nextDouble();
+			comissionados.setComissao(comissao);
+			clearBuffer();
+			
 			debug(comissionados);
 			this.pagamento.AdicionarEmpregado(comissionados);
 			

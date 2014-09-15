@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Comissionados extends Assalariado {
-	private final double comissao = 0.3;
+	private double comissao;
 	private Map<Date, List<Double> > vendas;
 	private double salario2Semanas;
 	
@@ -17,6 +17,14 @@ public class Comissionados extends Assalariado {
 		vendas = new HashMap<Date, List<Double> >();
 		
 		this.calcular_Salario2Semanas();
+	}
+	
+	public void setComissao(double comissao) {
+		this.comissao = comissao;
+	}
+	
+	public double getComissao() {
+		return this.comissao;
 	}
 	
 	public void setSalarioFixo(double salarioFixo) {
