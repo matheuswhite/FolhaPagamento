@@ -10,6 +10,7 @@ public class Comissionados extends Assalariado {
 	private double comissao;
 	private Map<Date, List<Double> > vendas;
 	private double salario2Semanas;
+	private boolean primeiraSemana = true;
 	
 	public Comissionados(String nome, String endereco, int id) {
 		super(nome, endereco, id);
@@ -17,6 +18,14 @@ public class Comissionados extends Assalariado {
 		vendas = new HashMap<Date, List<Double> >();
 		
 		this.calcular_Salario2Semanas();
+	}
+	
+	public boolean isPrimeiraSemana() {
+		return this.primeiraSemana;
+	}
+	
+	public void setPrimeiraSemana(boolean primeiraSemana) {
+		this.primeiraSemana = primeiraSemana;
 	}
 	
 	public void setComissao(double comissao) {

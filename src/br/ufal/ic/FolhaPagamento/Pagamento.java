@@ -27,6 +27,10 @@ public class Pagamento {
 		return this.sindicato;
 	}
 	
+	public ListAcoes getListAcoes() {
+		return this.listAcoes;
+	}
+	
 	private boolean isRegistrado(Empregado empregado) {
 		boolean retorno = false;
 		
@@ -40,7 +44,7 @@ public class Pagamento {
 	public void AdicionarEmpregado(Empregado empregado) {
 		if(!isRegistrado(empregado)) {
 			this.empregados.add(empregado);
-			this.listAcoes.add("AddEmpregado", empregado);
+			this.listAcoes.add("AddEmpregado");
 		}
 		else {
 			// erro msg
@@ -51,7 +55,7 @@ public class Pagamento {
 		if(!this.empregados.isEmpty()) {
 			if(isRegistrado(empregado)) {
 				this.empregados.remove(empregado);
-				this.listAcoes.add("DelEmpregados", empregado);
+				this.listAcoes.add("DelEmpregados");
 			}
 			else {
 				//erro msg
@@ -101,7 +105,8 @@ public class Pagamento {
 	//adicionar mudança de matricula
 	public void AlterarEmpregado(String nome, String endereco, 
 			Empregado empregado, String metodoPagamento, 
-			boolean pertenceSindicato, int matricula, double taxaSindical) {
+			boolean pertenceSindicato, int matricula, double taxaSindical, 
+			Empregado empregadoAntigo) {
 		
 		if(isRegistrado(empregado)) {
 			empregado.setNome(nome);
@@ -170,34 +175,6 @@ public class Pagamento {
 		return saida;
 	}
 	
-	
-	//fazer
-	@SuppressWarnings("deprecation")
-	private boolean is2Semana(Date date, Date inicio) {
-		boolean saida = false;
-		Date quatorze = date;
-		int d, m, a, da, ma, aa;
-		
-		
-		while(quatorze.before(inicio)) {
-			d = quatorze.getDate();
-			m = quatorze.getMonth();
-			a = quatorze.getYear();
-			
-			da = d - 14;
-			ma = m - 1;
-			aa = a - 1;
-			
-			
-			if(da <= 0) {
-				
-			}
-			quatorze.setDate(d - 14);
-		}
-		
-		return saida;
-	}
-	
 	public void rodarFolhaPagamento(Date date) {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
@@ -215,6 +192,7 @@ public class Pagamento {
 		}
 		
 		if(isUltimoDiaUtil(date)) {
+			
 			for(int i = 0; i < this.empregados.size(); ++i) {
 				
 				Empregado empregado = this.empregados.get(i);
@@ -225,6 +203,24 @@ public class Pagamento {
 			}
 		}
 		
+		if(cal.get(Calendar.DAY_OF_WEEK) == 6) {
+			
+			for(int i = 0; i < this.empregados.size(); ++i) {
+				
+				Empregado empregado = this.empregados.get(i);
+				
+				if(empregado instanceof Comissionados) {
+					if( ((Comissionados) empregado).isPrimeiraSemana() ) {
+						//calcular salario e pagar pelo metodo escolhido
+						((Comissionados) empregado).setPrimeiraSemana(false);
+					}
+					else {
+						((Comissionados) empregado).setPrimeiraSemana(true);
+					}
+				}
+				
+			}
+		}
 		
 		//if(/*cada duas sextas*/) {
 			//pagar comissionados

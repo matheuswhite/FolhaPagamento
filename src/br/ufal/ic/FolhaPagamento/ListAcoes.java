@@ -16,29 +16,17 @@ public class ListAcoes {
 		empregado = new LinkedList<Empregado>();
 	}
 	
-	public void add(String acao, Empregado empregado) {
+	public void add(String acao) {
 		acao.toUpperCase();
 		acoes.push(acao);
 		
-		this.empregado.add(empregado);
+		//this.empregado.add(empregado);
 	}
 	
-	public void add(String acao, Cartao cartao) {
+	public void add(String acao, Acao object) {
 		
 	}
-	
-	public void add(String acao, Venda venda) {
-		
-	}
-	
-	public void add(String acao, Taxa taxa) {
-		
-	}
-	
-	public void add(String acao, FolhaPagamento folha) {
-		
-	}
-	
+
 	public void undo() {
 		
 	}
