@@ -2,7 +2,9 @@ package br.ufal.ic.FolhaPagamento;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -305,38 +307,49 @@ public class Main {
 		print("Novo nome: (x0 - para não alterar)\n");
 		nome = scan.nextLine();
 		if(nome == "x0") {
-			nome = "";
+			nome = temp.getNome();
 		}
 		this.clearBuffer();
 		
 		print("Novo endereço: (x0 - para não alterar)\n");
 		endereco = scan.nextLine();
 		if(endereco == "x0"){
-			endereco = "";
+			endereco = temp.getEndereco();
 		}
 		this.clearBuffer();
 		
-		print("Novo metodo de pagamento: (x0 - para não alterar)\n");
+		print("Novo metodo de pagamento: (x0 - para não alterar)\n1- Cheque pelos correios\t2- Cheque em mãos\t3- Depósito\n");
 		metodoPagamento = scan.nextLine();
-		if(metodoPagamento == "x0") {
-			metodoPagamento = "";
-		}
 		this.clearBuffer();
+		
+		if(metodoPagamento == "x0") {
+			metodoPagamento = temp.getMetodoPagamento();
+		}
+		else if(metodoPagamento == "1") {
+			metodoPagamento = "Cheque pelos correios";
+		}
+		else if(metodoPagamento == "2") {
+			metodoPagamento = "Cheque em mãos";
+		}
+		else if(metodoPagamento == "3") {
+			metodoPagamento = "Depósito";
+		}
+		
 		
 		print("Pertence ao sindicato?\n1- Sim\t2- Nao\n");
 		escolha = scan.nextInt();
 		this.clearBuffer();
-		if(escolha == 1) {
+		
+		if(escolha == 1 && !temp.isSindicato()) {
 			pertenceSindicato = true;
 			matricula = pagamento.getSindicato().gerarId(2000);
 			
-			print("Digite a taxa sindical: ( (-95) -> para não alterar)\n");
+			print("Digite a taxa sindical: \n");
 			taxaSindical = scan.nextDouble();
 			this.clearBuffer();
-			
-			if(taxaSindical == -95) {
-				taxaSindical = (Double) null;
-			}
+		}
+		else if(escolha == 1 && temp.isSindicato()) {
+			pertenceSindicato = true;
 		}
 		
 		
@@ -383,7 +396,9 @@ public class Main {
 	}
 	
 	private void RodarFolha() {
+		Date now = new Date(System.currentTimeMillis());
 		
+		pagamento.rodarFolhaPagamento(now);
 	}
 	
 	private void undo() {

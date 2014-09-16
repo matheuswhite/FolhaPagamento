@@ -86,6 +86,10 @@ public class Empregado {
 		return this.id;
 	}
 	
+	public String getMetodoPagamento() {
+		return this.metodoPagamento;
+	}
+	
 	
 	public void baterPonto(Date dateInicio, Date dateFim) {
 		this.pontoInicio = dateInicio;

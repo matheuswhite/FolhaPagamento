@@ -2,6 +2,7 @@ package br.ufal.ic.FolhaPagamento;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Horista extends Empregado{
 	private double salarioPorHora;
@@ -21,12 +22,23 @@ public class Horista extends Empregado{
 		return this.salarioPorHora;
 	}
 	
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void setHorasTrabalhadas() {
-		this.horasTabalhadas = this.pontoInicio.getHours() - this.pontoFim.getHours();
+		Calendar cal = new GregorianCalendar();
+		Calendar calFim = new GregorianCalendar();
+		
+		cal.setTime(pontoInicio);
+		calFim.setTime(pontoFim);
+		
+		this.horasTabalhadas = cal.get(Calendar.HOUR_OF_DAY) - calFim.get(Calendar.HOUR_OF_DAY);
+		
+		//this.horasTabalhadas = this.pontoInicio.getHours() - this.pontoFim.getHours();
 	}
 	
 	public void setSalarioBruto() {
+		this.setHorasTrabalhadas();
+		this.setHorasExtras();
+		
 		this.salarioBruto += this.horasTabalhadas * this.salarioPorHora;
 		this.salarioBruto += this.horasExtras * 1.5;
 	}

@@ -44,7 +44,7 @@ public class Sindicato {
 			empregado.AssociarAoSindicato(true, id);
 		}
 		else {
-			// erro msg
+			System.out.println("Empregado já associado!");
 		}
 	}
 	
@@ -75,6 +75,10 @@ public class Sindicato {
 				empregado.salarioLiquido = empregado.salarioBruto - this.taxaFixa.get(empregado);
 			}
 		}
+	}
+	
+	public void cobrarTaxaFixaIndividual(Empregado empregado) {
+		empregado.salarioLiquido = empregado.salarioBruto - this.taxaFixa.get(empregado);
 	}
 	
 	public void cobrarTaxaExtra(double valor, int matricula) {
