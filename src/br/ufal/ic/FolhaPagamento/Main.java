@@ -338,13 +338,13 @@ public class Main {
 		if(metodoPagamento.contentEquals("x0")) {
 			metodoPagamento = temp.getMetodoPagamento();
 		}
-		else if(metodoPagamento == "1") {
+		else if(metodoPagamento.contentEquals("1")) {
 			metodoPagamento = "Cheque pelos correios";
 		}
-		else if(metodoPagamento == "2") {
+		else if(metodoPagamento.contentEquals("2")) {
 			metodoPagamento = "Cheque em mãos";
 		}
-		else if(metodoPagamento == "3") {
+		else if(metodoPagamento.contentEquals("3")) {
 			metodoPagamento = "Depósito";
 		}
 		

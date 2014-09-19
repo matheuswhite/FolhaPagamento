@@ -16,8 +16,6 @@ public class Comissionados extends Assalariado {
 		super(nome, endereco, id);
 		
 		vendas = new HashMap<Date, List<Double> >();
-		
-		this.calcular_Salario2Semanas();
 	}
 	
 	public boolean isPrimeiraSemana() {

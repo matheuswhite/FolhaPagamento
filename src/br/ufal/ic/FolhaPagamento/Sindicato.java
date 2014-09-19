@@ -45,16 +45,14 @@ public class Sindicato {
 	
 	public void addAssociado(Empregado empregado) {
 		
-		if(!empregado.isSindicato()) {
+		
 			int id = gerarId(this.limiteAssociados);
 		
 			this.associados.put(id, empregado);
 			
 			empregado.AssociarAoSindicato(true, id);
-		}
-		else {
-			System.out.println("Empregado já associado!");
-		}
+		
+		
 	}
 	
 	protected boolean findAssociado(int i) {

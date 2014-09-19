@@ -118,15 +118,13 @@ public class Pagamento {
 			
 			if(empregado.isSindicato()) {
 				sindicato.addAssociado(empregado);
-				matricula = empregado.getMatricula();
 			}
 			
 			else {
 				sindicato.delAssociado(empregadoAntigo.getMatricula());
 			}
 			
-			System.out.println(matricula);
-			this.sindicato.setTaxa(taxaSindical, matricula);
+			this.sindicato.setTaxa(taxaSindical, empregado.getMatricula());
 			
 			this.empregados.remove(empregadoAntigo);
 			this.empregados.add(empregado);
@@ -173,22 +171,29 @@ public class Pagamento {
 				
 				if(empregado instanceof Horista) {
 					((Horista) empregado).setSalarioBruto();
-					sindicato.cobrarTaxaFixaIndividual(empregado);
 					empregado.calcularSalarioLiquido();
 					
-					System.out.println("Salario de " + empregado.salarioLiquido + "pago ao funcionario" + empregado.getNome() + 
-							"atraves " + empregado.getMetodoPagamento());
+					if(empregado.isSindicato()) {
+						sindicato.cobrarTaxaFixaIndividual(empregado);
+					}
+					
+					System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
+							" atraves " + empregado.getMetodoPagamento());
 				}
 				
 				if(empregado instanceof Comissionados) {
 					
 					if( ((Comissionados) empregado).isPrimeiraSemana() ) {
 						
-						sindicato.cobrarTaxaFixaIndividual(empregado);
+						((Comissionados) empregado).calcular_Salario2Semanas();
 						empregado.calcularSalarioLiquido();
 						
-						System.out.println("Salario de " + empregado.salarioLiquido + "pago ao funcionario" + empregado.getNome() + 
-								"atraves " + empregado.getMetodoPagamento());
+						if(empregado.isSindicato()) {
+							sindicato.cobrarTaxaFixaIndividual(empregado);
+						}
+						
+						System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
+								" atraves " + empregado.getMetodoPagamento());
 						
 						((Comissionados) empregado).setPrimeiraSemana(false);
 					}
@@ -210,9 +215,12 @@ public class Pagamento {
 				Empregado empregado = this.empregados.get(i);
 				
 				if(empregado instanceof Assalariado) {
-					
-					sindicato.cobrarTaxaFixaIndividual(empregado);
 					empregado.calcularSalarioLiquido();
+					
+					
+					if(empregado.isSindicato()) {
+						sindicato.cobrarTaxaFixaIndividual(empregado);
+					}
 					
 					System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
 							" atraves " + empregado.getMetodoPagamento());
