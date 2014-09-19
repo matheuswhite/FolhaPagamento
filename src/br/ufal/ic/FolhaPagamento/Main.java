@@ -31,11 +31,22 @@ public class Main {
 	
 	private Empregado escolhaDeEmpregado(String string) {
 		print("Escolha um empregado " + string + ": \n");
+		String aux = "";
 		
 		for(int i=0; i < pagamento.getEmpregados().size(); ++i) {
 			Empregado empregado = pagamento.getEmpregados().get(i);
 			
-			print(i + "- " + empregado.getNome() + " / Id: " + empregado.getId() + "\n");
+			if(empregado instanceof Horista) {
+				aux = "Horista";
+			}
+			else if(empregado instanceof Assalariado) {
+				aux = "Assalariado";
+			}
+			else if(empregado instanceof Comissionados) {
+				aux = "Comissionado";
+			}
+			
+			print(i + "- " + empregado.getNome() + " / Id: " + empregado.getId() + " / Tipo: " + aux +"\n");
 		
 		}
 		
@@ -52,7 +63,7 @@ public class Main {
 	private void debugEmpregado(Empregado empregado) {
 		print("\nNome: " + empregado.getNome());
 		print("\nEndereço: " + empregado.getEndereco());
-		print("\nId: " + empregado.getId());
+		print("\nId: " + empregado.getId() + "\n");
 	}
 	
 	private void debug(Horista horista) {
@@ -70,7 +81,8 @@ public class Main {
 	private void debug(Comissionados comissionado) {
 		print("\nComissionado");
 		debugEmpregado(comissionado);
-		print("\nSalario Fixo: " + comissionado.getSalarioFixo() + "\n");
+		print("\nSalario Fixo: " + comissionado.getSalarioFixo());
+		print("\nComissao: " + comissionado.getComissao() + "\n");
 	}
 	
 	private void print(String mensagem) {
@@ -301,19 +313,20 @@ public class Main {
 		int matricula = 0;
 		boolean pertenceSindicato = false;
 		double taxaSindical = 0;
+		double salario, comissao;
 		
 		Empregado temp = this.escolhaDeEmpregado("para ser alterado");
 		
 		print("Novo nome: (x0 - para não alterar)\n");
 		nome = scan.nextLine();
-		if(nome == "x0") {
+		if(nome.contentEquals("x0")) {
 			nome = temp.getNome();
 		}
 		this.clearBuffer();
 		
 		print("Novo endereço: (x0 - para não alterar)\n");
 		endereco = scan.nextLine();
-		if(endereco == "x0"){
+		if(endereco.contentEquals("x0")){
 			endereco = temp.getEndereco();
 		}
 		this.clearBuffer();
@@ -322,7 +335,7 @@ public class Main {
 		metodoPagamento = scan.nextLine();
 		this.clearBuffer();
 		
-		if(metodoPagamento == "x0") {
+		if(metodoPagamento.contentEquals("x0")) {
 			metodoPagamento = temp.getMetodoPagamento();
 		}
 		else if(metodoPagamento == "1") {
@@ -342,52 +355,71 @@ public class Main {
 		
 		if(escolha == 1 && !temp.isSindicato()) {
 			pertenceSindicato = true;
-			matricula = pagamento.getSindicato().gerarId(2000);
 			
 			print("Digite a taxa sindical: \n");
 			taxaSindical = scan.nextDouble();
 			this.clearBuffer();
 		}
+		
 		else if(escolha == 1 && temp.isSindicato()) {
 			pertenceSindicato = true;
 		}
 		
 		
 		
-		print("Escolha o novo tipo de empregado:\n1- Horista\t2- Assalariado\t3- Comissionado");
+		print("Escolha o novo tipo de empregado:\n1- Horista\t2- Assalariado\t3- Comissionado\n");
+		escolha = scan.nextInt();
+		
 		switch (escolha) {
 		case 1:
 			
-			Horista horista = (Horista)temp;
-		
+			Horista horista = new Horista(nome, endereco, temp.getId());
+			
+			print("Salario por hora: \n");
+			salario = scan.nextDouble();
+			horista.setSalarioPorHora(salario);
+			clearBuffer();
 			
 			pagamento.AlterarEmpregado(nome, endereco, horista, 
 						metodoPagamento, pertenceSindicato, matricula, 
 						taxaSindical, temp);
 			
-			
+			this.debug(horista);
 			break;
 		case 2:
 			
-			Assalariado assalariado = (Assalariado)temp;
+			Assalariado assalariado = new Assalariado(nome, endereco, temp.getId());
 			
+			print("Salario Fixo: \n");
+			salario = scan.nextDouble();
+			assalariado.setSalarioBruto(salario);
+			clearBuffer();
 			
 			pagamento.AlterarEmpregado(nome, endereco, assalariado,
 						metodoPagamento, pertenceSindicato, matricula,
 						taxaSindical, temp);
 			
-			
+			this.debug(assalariado);
 			break;
 		case 3:
 			
-			Comissionados comissionado = (Comissionados)temp;
+			Comissionados comissionado = new Comissionados(nome, endereco, temp.getId());
 			
+			print("Salario Fixo: \n");
+			salario = scan.nextDouble();
+			comissionado.setSalarioFixo(salario);
+			clearBuffer();
+			
+			print("Comissao: \n");
+			comissao = scan.nextDouble();
+			comissionado.setComissao(comissao);
+			clearBuffer();
 			
 			pagamento.AlterarEmpregado(nome, endereco, comissionado,
 						metodoPagamento, pertenceSindicato, matricula, 
 						taxaSindical, temp);
 			
-			
+			this.debug(comissionado);
 			break;
 		default:
 			break;

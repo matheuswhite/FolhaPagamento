@@ -110,11 +110,22 @@ public class Pagamento {
 			boolean pertenceSindicato, int matricula, double taxaSindical, 
 			Empregado empregadoAntigo) {
 		
-		if(isRegistrado(empregado)) {
+		if(isRegistrado(empregadoAntigo)) {
 			empregado.setNome(nome);
 			empregado.setEndereco(endereco);
 			empregado.setMetodoPagamento(metodoPagamento);
-			empregado.AssociarAoSindicato(pertenceSindicato, matricula);
+			empregado.setSindicato(pertenceSindicato);
+			
+			if(empregado.isSindicato()) {
+				sindicato.addAssociado(empregado);
+				matricula = empregado.getMatricula();
+			}
+			
+			else {
+				sindicato.delAssociado(empregadoAntigo.getMatricula());
+			}
+			
+			System.out.println(matricula);
 			this.sindicato.setTaxa(taxaSindical, matricula);
 			
 			this.empregados.remove(empregadoAntigo);
@@ -123,7 +134,7 @@ public class Pagamento {
 			this.listAcoes.add("AltEmpregado");
 		}
 		else {
-			this.msgError("Empregado não registrado");
+			this.msgError("Empregado não registrado (187)");
 		}
 	}
 	

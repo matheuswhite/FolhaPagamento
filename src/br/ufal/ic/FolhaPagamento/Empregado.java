@@ -45,6 +45,10 @@ public class Empregado {
 		 }
 	}
 	
+	public void setSindicato(boolean sin) {
+		this.sindicato = sin;
+	}
+	
 	public boolean isSindicato() {
 		return this.sindicato;
 	}

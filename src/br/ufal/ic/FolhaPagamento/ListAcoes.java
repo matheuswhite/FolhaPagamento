@@ -23,9 +23,10 @@ public class ListAcoes {
 		//this.empregado.add(empregado);
 	}
 	
+	/*
 	public void add(String acao, Acao object) {
 		
-	}
+	}*/
 
 	public void undo() {
 		

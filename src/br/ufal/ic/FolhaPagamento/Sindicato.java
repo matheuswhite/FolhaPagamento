@@ -15,7 +15,16 @@ public class Sindicato {
 		this.taxaFixa = new HashMap<Empregado, Double>();
 	}
 	
-	
+	public void delAssociado(int matricula) {
+		Empregado empregado = this.associados.get(matricula);
+		if(empregado != null) {
+			taxaFixa.remove(empregado);
+			associados.remove(matricula);
+		}
+		else {
+			System.out.println("eRRoR - empregado não associado! (193)");
+		}
+	}
 	
 	
 	public int gerarId(int limiteAssociados) {
@@ -66,6 +75,9 @@ public class Sindicato {
 			Empregado empregado = this.associados.get(matricula);
 			this.taxaFixa.put(empregado, taxa);
 		}
+		else {
+			System.out.println("eRROR - empregado não encontrado! (204)");
+		}
 	}
 	
 	public void cobrarTaxaFixa() {
@@ -82,7 +94,11 @@ public class Sindicato {
 	}
 	
 	public void cobrarTaxaExtra(double valor, int matricula) {
+		System.out.println("entrei!");
 		Empregado empregado = this.associados.get(matricula);
+		if(empregado == null) {
+			System.out.println("Empregado null! Socorro!!!!!");
+		}
 		empregado.salarioProximoMes -= valor;
 		empregado.debitoProximoMes = true;
 	}
