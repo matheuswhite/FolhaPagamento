@@ -1,16 +1,20 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.Calendar;
+
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+
+import br.ufal.ic.FolhaPagamento.Acoes.*;
 
 
 public class Pagamento {
 	private List<Empregado> empregados;
 	private Sindicato sindicato;
 	private ListAcoes listAcoes;
+	private Adicionar adicionar;
 	
 	public Pagamento() {
 		empregados = new LinkedList<Empregado>();
@@ -47,7 +51,7 @@ public class Pagamento {
 	public void AdicionarEmpregado(Empregado empregado) {
 		if(!isRegistrado(empregado)) {
 			this.empregados.add(empregado);
-			this.listAcoes.add("AddEmpregado");
+			this.listAcoes.add();
 		}
 		else {
 			this.msgError("Empregado já registrado");
@@ -58,7 +62,7 @@ public class Pagamento {
 		if(!this.empregados.isEmpty()) {
 			if(isRegistrado(empregado)) {
 				this.empregados.remove(empregado);
-				this.listAcoes.add("DelEmpregados");
+				this.listAcoes.add("DEL");
 			}
 			else {
 				this.msgError("Empregado não registrado");
@@ -73,7 +77,7 @@ public class Pagamento {
 		if(isRegistrado(empregado)) {
 			int index = this.empregados.indexOf(empregado);
 			this.empregados.get(index).baterPonto(inicio, fim);
-			this.listAcoes.add("CartaoPonto");
+			this.listAcoes.add("CART");
 		}
 		else {
 			this.msgError("Empregado não registrado");
@@ -84,7 +88,7 @@ public class Pagamento {
 		if(empregado instanceof Comissionados) {
 			if(isRegistrado(empregado)) {
 				((Comissionados) empregado).registrarVenda(date, venda);
-				this.listAcoes.add("Venda");
+				this.listAcoes.add("VEND");
 			}
 			else {
 				this.msgError("Empregado não registrado");
@@ -98,7 +102,7 @@ public class Pagamento {
 	public void LancarTaxaExtra(Empregado empregado, double valor) {
 		if(empregado.isSindicato()) {
 			this.sindicato.cobrarTaxaExtra(valor, empregado.getMatricula());
-			this.listAcoes.add("TaxaExtra");
+			this.listAcoes.add("TAX");
 		}
 		else {
 			this.msgError("Empregado não registrado no sindicato");
@@ -129,7 +133,7 @@ public class Pagamento {
 			this.empregados.remove(empregadoAntigo);
 			this.empregados.add(empregado);
 			
-			this.listAcoes.add("AltEmpregado");
+			this.listAcoes.add("ALT");
 		}
 		else {
 			this.msgError("Empregado não registrado (187)");
@@ -231,6 +235,6 @@ public class Pagamento {
 		}
 		
 		
-		this.listAcoes.add("FolhaPagamento");
+		this.listAcoes.add("FOL");
 	}
 }

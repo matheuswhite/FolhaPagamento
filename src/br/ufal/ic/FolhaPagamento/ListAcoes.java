@@ -1,38 +1,33 @@
 package br.ufal.ic.FolhaPagamento;
 
+import java.util.Date;
+
 import java.util.List;
 import java.util.Stack;
-import java.util.LinkedList;
+import br.ufal.ic.FolhaPagamento.Acoes.*;
 
 public class ListAcoes {
-	private Stack<String> acoes;
-	private Stack<String> aux;
-	private List<Empregado> empregado;
+	private Stack<Acoes> conteudo;
+	private Stack<Acoes> conteudoAux;
 	
-	public ListAcoes() {
-		acoes = new Stack<String>();
-		aux = new Stack<String>();
-		
-		empregado = new LinkedList<Empregado>();
+	public ListAcoes() {		
+		conteudo = new Stack<Acoes>();
+		conteudoAux = new Stack<Acoes>();
 	}
 	
-	public void add(String acao) {
-		acao.toUpperCase();
-		acoes.push(acao);
-		
-		//this.empregado.add(empregado);
+	public void add(Acoes object) {
+		conteudo.push(object);
 	}
-	
-	/*
-	public void add(String acao, Acao object) {
-		
-	}*/
 
-	public void undo() {
-		
+	public void undo(Pagamento pagamento) {
+		Acoes acao = conteudo.pop();
+		acao.desfaz(pagamento);
+		conteudoAux.push(acao);
 	}
 	
-	public void redo() {
-		
+	public void redo(Pagamento pagamento) {
+		Acoes acao = conteudoAux.pop();
+		acao.refaz(pagamento);
+		conteudo.push(acao);
 	}
 }
