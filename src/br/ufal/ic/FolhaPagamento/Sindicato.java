@@ -92,7 +92,6 @@ public class Sindicato {
 	}
 	
 	public void cobrarTaxaExtra(double valor, int matricula) {
-		System.out.println("entrei!");
 		Empregado empregado = this.associados.get(matricula);
 		if(empregado == null) {
 			System.out.println("Empregado null! Socorro!!!!!");

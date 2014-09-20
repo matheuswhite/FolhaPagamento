@@ -38,6 +38,19 @@ public class Empregado {
 		this.sindicato = false;
 	} 
 	
+	public void setSalarioProximoMes(double valor, boolean mais) {
+		if(mais){
+			this.salarioProximoMes += valor;
+		}
+		else {
+			this.salarioProximoMes -= valor;
+		}
+		
+	}
+	
+	public void setDebitoProximoMes(boolean valor) {
+		this.debitoProximoMes = valor;
+	}
 	
 	protected void calcularSalarioLiquido() {
 		 if(this.debitoProximoMes) {

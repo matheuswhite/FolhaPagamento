@@ -18,6 +18,8 @@ public class Pagamento {
 	private Adicionar adicionar;
 	private Remover remover;
 	private Cartao cartao;
+	private Cartao cartaoAux;
+	private Cartao cartaoAntigo;
 	private Venda venda;
 	private Taxa taxa;
 	private Alterar alterar;
@@ -87,9 +89,16 @@ public class Pagamento {
 	public void LancarCartaoPonto(Empregado empregado, Date inicio, Date fim) {
 		if(isRegistrado(empregado)) {
 			int index = this.empregados.indexOf(empregado);
+			
+			cartaoAntigo = new Cartao(empregado, empregado.pontoInicio, empregado.pontoFim);
+			
 			this.empregados.get(index).baterPonto(inicio, fim);
 			
-			//this.listAcoes.add("CART");
+			cartao = new Cartao(empregado, inicio, fim);
+			
+			cartaoAux = new Cartao(cartaoAntigo, cartao);
+			
+			this.listAcoes.add(cartaoAux);
 		}
 		else {
 			this.msgError("Empregado não registrado");
@@ -101,7 +110,9 @@ public class Pagamento {
 			if(isRegistrado(empregado)) {
 				((Comissionados) empregado).registrarVenda(date, venda);
 				
-				//this.listAcoes.add("VEND");
+				this.venda = new Venda(venda, date, empregado);
+				
+				this.listAcoes.add(this.venda);
 			}
 			else {
 				this.msgError("Empregado não registrado");
@@ -116,7 +127,9 @@ public class Pagamento {
 		if(empregado.isSindicato()) {
 			this.sindicato.cobrarTaxaExtra(valor, empregado.getMatricula());
 			
-			//this.listAcoes.add("TAX");
+			this.taxa = new Taxa(empregado, valor);
+			
+			this.listAcoes.add(this.taxa);
 		}
 		else {
 			this.msgError("Empregado não registrado no sindicato");

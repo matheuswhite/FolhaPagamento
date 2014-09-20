@@ -427,8 +427,38 @@ public class Main {
 		
 	}
 	
-	private void RodarFolha() {
-		Date now = new Date(System.currentTimeMillis());
+	private void RodarFolha() throws ParseException {
+		//Date now = new Date(System.currentTimeMillis());
+		String dia, mes, ano, horas, minutos, segundos;
+		Date now = new Date();
+		
+		print("Entre com a data da venda: \n");
+		
+		print("Dia (00):\n");
+		dia = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Mes (00):\n");
+		mes = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Ano (0000):\n");
+		ano = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Hora (00):\n");
+		horas = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Minutos (00):\n");
+		minutos = scan.nextLine();
+		this.clearBuffer();
+		
+		print("Segundos (00):\n");
+		segundos = scan.nextLine();
+		this.clearBuffer();
+		
+		now = this.stringToDate(ano + "-" + mes + "-" + dia + " " + horas + ":" + minutos + ":" + segundos + ".0");
 		
 		pagamento.rodarFolhaPagamento(now);
 	}

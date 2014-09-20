@@ -46,6 +46,10 @@ public class Comissionados extends Assalariado {
 		this.salario2Semanas = this.salarioBruto / 2;
 	}
 	
+	public Map<Date, List<Double> > getVenda() {
+		return this.vendas;
+	}
+	
 	public void registrarVenda(Date date, double valor) {
 		List<Double> aux;
 		if(vendas.get(date) != null) {
