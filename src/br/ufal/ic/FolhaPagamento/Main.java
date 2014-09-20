@@ -434,11 +434,11 @@ public class Main {
 	}
 	
 	private void undo() {
-		pagamento.getListAcoes().undo();
+		pagamento.getListAcoes().undo(pagamento);
 	}
 	
 	private void redo() {
-		pagamento.getListAcoes().redo();
+		pagamento.getListAcoes().redo(pagamento);
 	}
 	
 	public static void main(String[] args) throws ParseException {

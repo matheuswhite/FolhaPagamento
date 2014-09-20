@@ -1,5 +1,19 @@
 package br.ufal.ic.FolhaPagamento.Acoes;
 
-public class Venda {
+import br.ufal.ic.FolhaPagamento.*;
+
+public class Venda implements Acoes{
+
+	@Override
+	public void refaz(Pagamento pagamento) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void desfaz(Pagamento pagamento) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

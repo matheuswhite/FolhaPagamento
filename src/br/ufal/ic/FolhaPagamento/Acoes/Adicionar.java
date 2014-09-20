@@ -11,14 +11,12 @@ public class Adicionar implements Acoes {
 	
 	@Override
 	public void refaz(Pagamento pagamento) {
-		// TODO Auto-generated method stub
-		
+		pagamento.getEmpregados().add(empregado);
 	}
 
 	@Override
 	public void desfaz(Pagamento pagamento) {
-		// TODO Auto-generated method stub
-		
+		pagamento.getEmpregados().remove(empregado);
 	}
 
 }

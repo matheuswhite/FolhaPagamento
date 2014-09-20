@@ -14,7 +14,14 @@ public class Pagamento {
 	private List<Empregado> empregados;
 	private Sindicato sindicato;
 	private ListAcoes listAcoes;
+	
 	private Adicionar adicionar;
+	private Remover remover;
+	private Cartao cartao;
+	private Venda venda;
+	private Taxa taxa;
+	private Alterar alterar;
+	private Folha folha;
 	
 	public Pagamento() {
 		empregados = new LinkedList<Empregado>();
@@ -51,7 +58,9 @@ public class Pagamento {
 	public void AdicionarEmpregado(Empregado empregado) {
 		if(!isRegistrado(empregado)) {
 			this.empregados.add(empregado);
-			this.listAcoes.add();
+			
+			this.adicionar = new Adicionar(empregado);
+			this.listAcoes.add(adicionar);
 		}
 		else {
 			this.msgError("Empregado já registrado");
@@ -62,7 +71,9 @@ public class Pagamento {
 		if(!this.empregados.isEmpty()) {
 			if(isRegistrado(empregado)) {
 				this.empregados.remove(empregado);
-				this.listAcoes.add("DEL");
+				
+				this.remover = new Remover(empregado);
+				this.listAcoes.add(remover);
 			}
 			else {
 				this.msgError("Empregado não registrado");
@@ -77,7 +88,8 @@ public class Pagamento {
 		if(isRegistrado(empregado)) {
 			int index = this.empregados.indexOf(empregado);
 			this.empregados.get(index).baterPonto(inicio, fim);
-			this.listAcoes.add("CART");
+			
+			//this.listAcoes.add("CART");
 		}
 		else {
 			this.msgError("Empregado não registrado");
@@ -88,7 +100,8 @@ public class Pagamento {
 		if(empregado instanceof Comissionados) {
 			if(isRegistrado(empregado)) {
 				((Comissionados) empregado).registrarVenda(date, venda);
-				this.listAcoes.add("VEND");
+				
+				//this.listAcoes.add("VEND");
 			}
 			else {
 				this.msgError("Empregado não registrado");
@@ -102,7 +115,8 @@ public class Pagamento {
 	public void LancarTaxaExtra(Empregado empregado, double valor) {
 		if(empregado.isSindicato()) {
 			this.sindicato.cobrarTaxaExtra(valor, empregado.getMatricula());
-			this.listAcoes.add("TAX");
+			
+			//this.listAcoes.add("TAX");
 		}
 		else {
 			this.msgError("Empregado não registrado no sindicato");
@@ -133,7 +147,7 @@ public class Pagamento {
 			this.empregados.remove(empregadoAntigo);
 			this.empregados.add(empregado);
 			
-			this.listAcoes.add("ALT");
+			//this.listAcoes.add("ALT");
 		}
 		else {
 			this.msgError("Empregado não registrado (187)");
@@ -235,6 +249,6 @@ public class Pagamento {
 		}
 		
 		
-		this.listAcoes.add("FOL");
+		//this.listAcoes.add("FOL");
 	}
 }
