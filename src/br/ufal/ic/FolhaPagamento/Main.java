@@ -161,6 +161,9 @@ public class Main {
 				System.out.println("Escolha uma das opções abaixo. " + ex);
 				//ex.printStackTrace();
 			}
+			catch (InputMismatchException ex) {
+				System.out.println("Escolha uma das opções abaixo. " + ex);
+			}
 			finally {
 				this.clearBuffer();
 			}
@@ -350,6 +353,7 @@ public class Main {
 		String inicio, fim;
 		GregorianCalendar cal;
 		GregorianCalendar cal2;
+		
 		empregado = this.escolhaDeEmpregado("para lancar um ponto");
 		
 		

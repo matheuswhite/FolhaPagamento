@@ -39,6 +39,10 @@ public class Empregado {
 		this.salarioProximoMes = new double[11];
 		this.debitoMes = new boolean[11];
 		
+		for(int i= 0; i < 11; ++i) {
+			this.debitoMes[i] = false;
+		}
+		
 		this.sindicato = false;
 		
 		//horas trabalhadas num dia
@@ -46,7 +50,7 @@ public class Empregado {
 		
 		try {
 			for(int i = 0; i < 31; ++i) {
-				this.pontos[i] = -1;
+				this.pontos[i] = 0;
 			}
 		}
 		catch (ArrayIndexOutOfBoundsException ex) {
@@ -137,24 +141,14 @@ public class Empregado {
 		
 		int dia = cal.get(Calendar.DATE);
 		
-		if(this.pontos[dia] == -1) {
-			this.pontos[dia] = hora - hora2;
-		}
 		
-		else {
-			this.pontos[dia] += hora - hora2; 
-		}
+		this.pontos[dia] = hora2 - hora;
 		
 	}
 	
 	public void baterPonto(int horasTrabalhadas, int dia) {
-		if(this.pontos[dia] == -1) {
-			this.pontos[dia] = horasTrabalhadas;
-		}
 		
-		else {
-			this.pontos[dia] += horasTrabalhadas; 
-		}
+		this.pontos[dia] = horasTrabalhadas;
 	}
 	
 }

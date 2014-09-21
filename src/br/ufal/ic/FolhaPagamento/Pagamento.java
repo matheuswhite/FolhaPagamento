@@ -1,7 +1,6 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.Calendar;
-
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;

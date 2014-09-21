@@ -21,15 +21,14 @@ public class Horista extends Empregado{
 	
 	public void calcularSalarioBruto(double salarioPorHora, GregorianCalendar cal) {
 		
-		int dia = cal.get(Calendar.DATE);
+		int dia = cal.get(Calendar.DAY_OF_MONTH);
 		
-		if(this.pontos[dia] > 8) {
-			this.salarioBruto += this.salarioPorHora * this.pontos[dia];
+		if(this.pontos[dia] <= 8) {
+			this.salarioBruto = this.salarioPorHora * this.pontos[dia];
 		}
 		else {
-			this.salarioBruto += this.salarioPorHora * this.pontos[dia] * this.TAXA_HORA_EXTRA;
+			this.salarioBruto = this.salarioPorHora * this.pontos[dia] * this.TAXA_HORA_EXTRA;
 		}
-		
 	}
 	
 	public double getSalarioPorHora() {
