@@ -109,22 +109,17 @@ public class Pagamento {
 	}
 	
 	public void LancarVenda(Empregado empregado, double venda, GregorianCalendar cal) {
-		if(empregado instanceof Comissionados) {
+		try {
+			((Comissionados) empregado).registrarVenda(cal, venda);
 			
-			try {
-				((Comissionados) empregado).registrarVenda(cal, venda);
-				
-				this.venda = new Venda(venda, cal, empregado);
-				
-				this.listAcoes.add(this.venda);
-			}
-			catch ( NullPointerException e){
-				System.out.println("Empregado não registrado" + e.getMessage());
-			}
+			this.venda = new Venda(venda, cal, empregado);
+			
+			this.listAcoes.add(this.venda);
 		}
-		else {
-			System.out.println("Este empregado não é comissionado");
+		catch ( NullPointerException e){
+			System.out.println("Empregado não registrado" + e.getMessage());
 		}
+		
 	}
 	
 	public void LancarTaxaExtra(Empregado empregado, double valor, GregorianCalendar cal) {
@@ -135,8 +130,6 @@ public class Pagamento {
 		this.taxa = new Taxa(empregado, valor, mes);
 			
 		this.listAcoes.add(this.taxa);
-		
-		System.out.println("Empregado não registrado no sindicato");
 	}
 	
 	public void AlterarEmpregado(String nome, String endereco, Empregado empregado, String metodoPagamento, 
@@ -234,7 +227,7 @@ public class Pagamento {
 			
 		}
 		catch ( NullPointerException e ) {
-			System.out.println("Empregado não encontrado!" + e.getMessage());
+			System.out.println("Empregado não encontrado! " + e.getMessage());
 		}
 		
 		//this.listAcoes.add("FOL");

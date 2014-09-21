@@ -1,5 +1,6 @@
 package br.ufal.ic.FolhaPagamento;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,11 +16,18 @@ public class Main {
 	private ListAcoes acoes;
 	private Scanner scan;
 	private final int limiteEmpregados = 2000;
+	private GregorianCalendar systemDate;
+	private boolean dataSistema;
 	
-	public Main() {
+	public Main(Date date) {
 		pagamento = new Pagamento();
 		acoes = new ListAcoes();
 		scan = new Scanner(System.in);
+		
+		systemDate = new GregorianCalendar();
+		systemDate.setTime(date);
+		
+		dataSistema = true;
 	}
 	
 	public boolean findEmpregado(int id) {
@@ -50,7 +58,6 @@ public class Main {
 		return id;
 	}
 	
-	
 	private GregorianCalendar stringToDate(String string) {
 		SimpleDateFormat format;
 		Date date;
@@ -77,6 +84,8 @@ public class Main {
 		System.out.println("Nome: " + empregado.getNome());
 		System.out.println("Endereço: " + empregado.getEndereco());
 		System.out.println("Método de pagamento: " + empregado.getMetodoPagamento());
+		System.out.println("Pertence ao Sindicato: " + empregado.isSindicato());
+		System.out.println("Taxa Sindical: " + empregado.taxaFixa);
 	}
 	
 	private void fichaEmpregado(Empregado empregado) {
@@ -366,14 +375,25 @@ public class Main {
 		pagamento.LancarCartaoPonto(empregado, cal, cal2);
 	}
 	
-	private void lancarVenda() throws ParseException {
-		Empregado empregado;
+	private void lancarVenda() {
+		Empregado empregado = null;
 		double valor = 0.0;
 		String data;
 		GregorianCalendar cal = null;
 		boolean exit = false;
 		
-		empregado = this.escolhaDeEmpregado("para lançar venda");
+		while(!exit) {
+			empregado = this.escolhaDeEmpregado("para lançar venda");
+		
+			if(!(empregado instanceof Comissionados)) {
+				System.out.println("Somente comissionados podem lançar vendas.");
+			}
+			else {
+				exit = true;
+			}
+		}
+		
+		exit = false;
 		
 		while(!exit) {
 			System.out.println("Digite o valor da venda:");
@@ -415,170 +435,233 @@ public class Main {
 	}
 	
 	private void taxaExtra() {
-		Empregado empregado = this.escolhaDeEmpregado("para cobrar taxa extra");
-		double valor;
+		Empregado empregado = null;
+		double valor = 0;
+		boolean exit = false;
 		
-		print("Digite o valor da taxa:\n");
-		valor = scan.nextDouble();
-		this.clearBuffer();
+		while(!exit) {
+			empregado = this.escolhaDeEmpregado("para cobrar taxa extra");
+			
+			//apagar depois
+			//empregado.AssociarAoSindicato(true, 200);
+			
+			if(empregado.isSindicato()) {
+				exit = true;
+			}
+			else {
+				System.out.println("Este empregado não esta cadastrado no sindicato. Escolha outro.");
+			}
+		}
 		
-		pagamento.LancarTaxaExtra(empregado, valor);
+		exit = false;
+		
+		while(!exit) {
+			try {
+				System.out.println("Digite o valor da taxa:");
+				valor = scan.nextDouble();
+				
+				exit = true;
+			}
+			catch (NumberFormatException ex){
+				System.out.println("Digite um numero decimal. " + ex);
+			}
+			catch (InputMismatchException ex) {
+				System.out.println("Digite um numero decimal com virgula.\nExemplo: 20,0" + ex);
+			}
+			finally {
+				this.clearBuffer();
+			}
+		}
+		
+		systemDate.add(Calendar.MONTH, 1);
+		
+		pagamento.LancarTaxaExtra(empregado, valor, systemDate);
 	}
 	
 	private void alterarEmpregados() {
-		String nome, endereco, metodoPagamento;
+		String nome, endereco, metodoPagamento = null;
 		int escolha = 0;
 		int matricula = 0;
 		boolean pertenceSindicato = false;
+		boolean exit = false;
 		double taxaSindical = 0;
 		double salario, comissao;
 		
 		Empregado temp = this.escolhaDeEmpregado("para ser alterado");
 		
-		print("Novo nome: (x0 - para não alterar)\n");
+		System.out.println("Novo nome: (x0 - para não alterar)");
 		nome = scan.nextLine();
 		if(nome.contentEquals("x0")) {
 			nome = temp.getNome();
 		}
 		this.clearBuffer();
 		
-		print("Novo endereço: (x0 - para não alterar)\n");
+		System.out.println("Novo endereço: (x0 - para não alterar)");
 		endereco = scan.nextLine();
 		if(endereco.contentEquals("x0")){
 			endereco = temp.getEndereco();
 		}
 		this.clearBuffer();
 		
-		print("Novo metodo de pagamento: (x0 - para não alterar)\n1- Cheque pelos correios\t2- Cheque em mãos\t3- Depósito\n");
-		metodoPagamento = scan.nextLine();
-		this.clearBuffer();
 		
-		if(metodoPagamento.contentEquals("x0")) {
-			metodoPagamento = temp.getMetodoPagamento();
+		while(!exit) {
+			System.out.println("Novo metodo de pagamento:\n1- Cheque pelos correios\t2- Cheque em mãos\t3- Depósito\t4- Para não alterar");
+			try {
+				
+				escolha = scan.nextInt();
+				
+				switch (escolha) {
+				case 1:
+					metodoPagamento = "Cheque pelos correios";
+					exit = true;
+					break;
+				case 2:
+					metodoPagamento = "Cheque em mãos";
+					exit = true;
+					break;
+				case 3:
+					metodoPagamento = "Depósito";
+					exit = true;
+					break;
+				case 4:
+					metodoPagamento = temp.getMetodoPagamento();
+					exit = true;
+					break;
+				default:
+					System.out.println("Escolha uma das opções abaixo.");
+					break;
+				}
+			}
+			catch (NumberFormatException ex) {
+				System.out.println("Digite um numero inteiro");
+			}
+			finally {
+				this.clearBuffer();
+				escolha = 0;
+			}
 		}
-		else if(metodoPagamento.contentEquals("1")) {
-			metodoPagamento = "Cheque pelos correios";
+		
+		exit = false;
+		
+		
+		while(!exit) {
+			System.out.println("Pertence ao sindicato?\n1- Sim\t2- Nao\t3- Para não alterar");
+			
+			try {
+				escolha = scan.nextInt();
+				this.clearBuffer();
+				
+				switch (escolha) {
+				case 1:
+					if(!temp.isSindicato()) {
+						pertenceSindicato = true;
+						
+						System.out.println("Digite a taxa sindical: \n");
+						taxaSindical = scan.nextDouble();
+					}
+					else {
+						pertenceSindicato = true;
+					}
+					break;
+				case 3:
+					pertenceSindicato = temp.isSindicato();
+					break;
+				default:
+					System.out.println("Escolha uma das opcões abaixo.");
+					break;
+				}
+			}
+			catch (NumberFormatException ex) {
+				System.out.println("Digite um numero. " + ex);
+			}
+			catch (InputMismatchException ex) {
+				System.out.println("Digite o numero decimal com virgula.\nExemplo: 20,00");
+			}
+			finally {
+				this.clearBuffer();
+				escolha = 0;
+			}
 		}
-		else if(metodoPagamento.contentEquals("2")) {
-			metodoPagamento = "Cheque em mãos";
-		}
-		else if(metodoPagamento.contentEquals("3")) {
-			metodoPagamento = "Depósito";
-		}
 		
+		exit = false;
 		
-		print("Pertence ao sindicato?\n1- Sim\t2- Nao\n");
-		escolha = scan.nextInt();
-		this.clearBuffer();
-		
-		if(escolha == 1 && !temp.isSindicato()) {
-			pertenceSindicato = true;
+		while(!exit) {
+			System.out.println("Escolha o novo tipo de empregado:\n1- Horista\t2- Assalariado\t3- Comissionado");
 			
-			print("Digite a taxa sindical: \n");
-			taxaSindical = scan.nextDouble();
-			this.clearBuffer();
-		}
-		
-		else if(escolha == 1 && temp.isSindicato()) {
-			pertenceSindicato = true;
-		}
-		
-		
-		
-		print("Escolha o novo tipo de empregado:\n1- Horista\t2- Assalariado\t3- Comissionado\n");
-		escolha = scan.nextInt();
-		
-		switch (escolha) {
-		case 1:
-			
-			Horista horista = new Horista(nome, endereco, temp.getId());
-			
-			print("Salario por hora: \n");
-			salario = scan.nextDouble();
-			horista.setSalarioPorHora(salario);
-			clearBuffer();
-			
-			pagamento.AlterarEmpregado(nome, endereco, horista, 
-						metodoPagamento, pertenceSindicato, matricula, 
-						taxaSindical, temp);
-			
-			this.debug(horista);
-			break;
-		case 2:
-			
-			Assalariado assalariado = new Assalariado(nome, endereco, temp.getId());
-			
-			print("Salario Fixo: \n");
-			salario = scan.nextDouble();
-			assalariado.setSalarioBruto(salario);
-			clearBuffer();
-			
-			pagamento.AlterarEmpregado(nome, endereco, assalariado,
-						metodoPagamento, pertenceSindicato, matricula,
-						taxaSindical, temp);
-			
-			this.debug(assalariado);
-			break;
-		case 3:
-			
-			Comissionados comissionado = new Comissionados(nome, endereco, temp.getId());
-			
-			print("Salario Fixo: \n");
-			salario = scan.nextDouble();
-			comissionado.setSalarioFixo(salario);
-			clearBuffer();
-			
-			print("Comissao: \n");
-			comissao = scan.nextDouble();
-			comissionado.setComissao(comissao);
-			clearBuffer();
-			
-			pagamento.AlterarEmpregado(nome, endereco, comissionado,
-						metodoPagamento, pertenceSindicato, matricula, 
-						taxaSindical, temp);
-			
-			this.debug(comissionado);
-			break;
-		default:
-			break;
+			try {
+				escolha = scan.nextInt();
+				this.clearBuffer();
+				
+				switch (escolha) {
+				case 1:
+					
+					System.out.println("Salario por hora:");
+					salario = scan.nextDouble();
+
+					Horista horista = new Horista(nome, endereco, temp.getId(), salario);
+					
+					pagamento.AlterarEmpregado(nome, endereco, horista, metodoPagamento, pertenceSindicato, matricula, taxaSindical, temp);
+					
+					this.fichaEmpregado(horista);
+					break;
+				case 2:
+					
+					System.out.println("Salario Fixo:");
+					salario = scan.nextDouble();
+					
+					Assalariado assalariado = new Assalariado(nome, endereco, temp.getId(), salario);
+					
+					pagamento.AlterarEmpregado(nome, endereco, assalariado, metodoPagamento, pertenceSindicato, matricula, taxaSindical, temp);
+					
+					this.fichaEmpregado(assalariado);
+					break;
+				case 3:
+					
+					System.out.println("Salario Fixo:");
+					salario = scan.nextDouble();
+					clearBuffer();
+					
+					Comissionados comissionado = new Comissionados(nome, endereco, temp.getId(), salario);
+					
+					System.out.println("Comissao:");
+					comissao = scan.nextDouble();
+					comissionado.setComissao(comissao);
+					
+					pagamento.AlterarEmpregado(nome, endereco, comissionado,
+								metodoPagamento, pertenceSindicato, matricula, 
+								taxaSindical, temp);
+					
+					this.fichaEmpregado(comissionado);
+					break;
+				default:
+					System.out.println("Escolha uma das opcões abaixo.");
+					break;
+				}
+			}
+			catch (NumberFormatException ex) {
+				System.out.println("Digite um numero. " + ex);
+			}
+			catch (InputMismatchException ex) {
+				System.out.println("Digite o numero decimal com virgula.\nExemplo: 20,00. " + ex);
+			}
+			finally {
+				this.clearBuffer();
+				escolha = 0;
+			}
 		}
 		
 	}
 	
-	private void RodarFolha() throws ParseException {
-		//Date now = new Date(System.currentTimeMillis());
-		String dia, mes, ano, horas, minutos, segundos;
-		Date now = new Date();
+	private void RodarFolha() {
+		if(!dataSistema) {
+			systemDate.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		else {
+			dataSistema = false;
+		}
 		
-		print("Entre com a data da venda: \n");
-		
-		print("Dia (00):\n");
-		dia = scan.nextLine();
-		this.clearBuffer();
-		
-		print("Mes (00):\n");
-		mes = scan.nextLine();
-		this.clearBuffer();
-		
-		print("Ano (0000):\n");
-		ano = scan.nextLine();
-		this.clearBuffer();
-		
-		print("Hora (00):\n");
-		horas = scan.nextLine();
-		this.clearBuffer();
-		
-		print("Minutos (00):\n");
-		minutos = scan.nextLine();
-		this.clearBuffer();
-		
-		print("Segundos (00):\n");
-		segundos = scan.nextLine();
-		this.clearBuffer();
-		
-		now = this.stringToDate(ano + "-" + mes + "-" + dia + " " + horas + ":" + minutos + ":" + segundos + ".0");
-		
-		pagamento.rodarFolhaPagamento(now);
+		System.out.println("Dia: " + systemDate.getTime().toString());
+		pagamento.rodarFolhaPagamento(systemDate);
 	}
 	
 	private void undo() {
@@ -589,8 +672,10 @@ public class Main {
 		pagamento.getListAcoes().redo(pagamento);
 	}
 	
-	public static void main(String[] args) throws ParseException {
-		Main window = new Main();
+	public static void main(String[] args) {
+		Date date = new Date(System.currentTimeMillis());
+		
+		Main window = new Main(date);
 		int entrada = 0;
 		boolean exit = false;
 		
@@ -631,8 +716,7 @@ public class Main {
 				exit = true;
 				break;
 			}
-			
-		} //while end
+		}
 		
 	}
 }

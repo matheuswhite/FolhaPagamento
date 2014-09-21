@@ -31,6 +31,9 @@ public class Empregado {
 		this.salarioBruto = 0.0;
 		this.salarioLiquido = 0.0;
 		this.taxaFixa = 0.0;
+		this.matriculaSindicato = 0;
+		this.sindicato = false;
+		this.metodoPagamento = null;
 		
 		//janeiro é 0
 		this.salarioProximoMes = new double[11];

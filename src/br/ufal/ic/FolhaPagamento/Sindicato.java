@@ -91,7 +91,7 @@ public class Sindicato {
 			empregado.debitoMes[mes] = true;
 		}
 		catch (NullPointerException e) {
-			System.out.println("Empregado não encontrado!" + e.getMessage());
+			System.out.println("Empregado não encontrado! " + e.getMessage());
 		}
 		
 	}
