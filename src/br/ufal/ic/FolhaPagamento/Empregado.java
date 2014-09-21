@@ -41,10 +41,15 @@ public class Empregado {
 		//horas trabalhadas num dia
 		this.pontos = new int[31];
 		
-		for(int i = 1; i <= this.pontos.length; ++i) {
-			this.pontos[i] = -1;
+		try {
+			for(int i = 0; i < 31; ++i) {
+				this.pontos[i] = -1;
+			}
 		}
-		
+		catch (ArrayIndexOutOfBoundsException ex) {
+			System.out.println("indice fora do array. " + ex);
+			ex.printStackTrace();
+		}
 	} 
 	
 	
