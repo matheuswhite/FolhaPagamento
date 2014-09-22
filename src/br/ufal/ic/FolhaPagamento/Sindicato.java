@@ -38,8 +38,6 @@ public class Sindicato {
 		while(!exit) {
 			id = gerador.nextInt(limiteAssociados);
 			
-			System.out.println(String.valueOf(id));
-			
 			if(!findAssociado(id)) {
 				exit = true;
 			}
@@ -49,11 +47,9 @@ public class Sindicato {
 	}
 	
 	public void addAssociado(Empregado empregado, double taxa) {
-		System.out.println("passei5");
 		
 		int id = gerarId(this.limiteAssociados);
 		
-		System.out.println("passei2");
 		try {
 			this.associados.put(id, empregado);
 		}

@@ -148,12 +148,12 @@ public class Pagamento {
 				this.sindicato.delAssociado(empregadoAntigo.getMatricula());
 			}
 			
-			System.out.println("passei10");
-			
 			this.empregados.remove(empregadoAntigo);
 			this.empregados.add(empregado);
 			
-			//this.listAcoes.add("ALT");
+			alterar = new Alterar(empregadoAntigo, empregado);
+			
+			this.listAcoes.add(alterar);
 		}
 		catch (NullPointerException e) {
 			System.out.println("Empregado " + empregadoAntigo.getNome() + " não encontrado" + e.getMessage());
@@ -190,7 +190,8 @@ public class Pagamento {
 						System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
 							" atraves " + empregado.getMetodoPagamento());
 					}
-						
+					
+					this.folha = new Folha(cal ,empregado);
 				}
 						
 				if(empregado instanceof Comissionados) {
@@ -225,11 +226,12 @@ public class Pagamento {
 				
 			}
 			
+			this.listAcoes.add(this.folha);
 		}
 		catch ( NullPointerException e ) {
 			System.out.println("Empregado não encontrado! " + e.getMessage());
 		}
 		
-		//this.listAcoes.add("FOL");
+		
 	}
 }

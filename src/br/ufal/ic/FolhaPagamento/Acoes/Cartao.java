@@ -1,7 +1,5 @@
 package br.ufal.ic.FolhaPagamento.Acoes;
 
-import java.util.Date;
-
 import br.ufal.ic.FolhaPagamento.*;
 
 public class Cartao implements Acoes{

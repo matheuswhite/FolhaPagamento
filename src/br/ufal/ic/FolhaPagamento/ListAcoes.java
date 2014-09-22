@@ -1,9 +1,10 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.Date;
-
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
+
 import br.ufal.ic.FolhaPagamento.Acoes.*;
 
 public class ListAcoes {
@@ -20,14 +21,30 @@ public class ListAcoes {
 	}
 
 	public void undo(Pagamento pagamento) {
-		Acoes acao = conteudo.pop();
-		acao.desfaz(pagamento);
-		conteudoAux.push(acao);
+		try {
+			Acoes acao = conteudo.pop();
+			acao.desfaz(pagamento);
+			conteudoAux.push(acao);
+		}
+		catch (StackOverflowError ex) {
+			System.out.println("OverFlow da pilha" + ex);
+		}
+		catch (EmptyStackException ex) {
+			System.out.println("Pilha vazia" + ex);
+		}
 	}
 	
 	public void redo(Pagamento pagamento) {
-		Acoes acao = conteudoAux.pop();
-		acao.refaz(pagamento);
-		conteudo.push(acao);
+		try {
+			Acoes acao = conteudoAux.pop();
+			acao.refaz(pagamento);
+			conteudo.push(acao);
+		}
+		catch (StackOverflowError ex) {
+			System.out.println("OverFlow da pilha" + ex);
+		}
+		catch (EmptyStackException ex) {
+			System.out.println("Pilha vazia" + ex);
+		}
 	}
 }
