@@ -75,6 +75,18 @@ public class Comissionados extends Assalariado {
 		}
 	}
 
+	public void setSalarioLiquido(double salario) {
+		this.salarioLiquido = salario;
+	}
+	
+	public void setSalario2Semanas(double salario) {
+		this.salario2Semanas = salario;
+	}
+	
+	public double getSalario2Semanas() {
+		return this.salario2Semanas;
+	}
+	
 	@Override
 	public void calcularSalarioLiquido(GregorianCalendar cal) {
 		

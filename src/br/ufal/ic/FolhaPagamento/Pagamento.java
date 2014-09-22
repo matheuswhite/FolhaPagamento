@@ -167,9 +167,8 @@ public class Pagamento {
 		
 		int dia = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		int mes = cal.get(Calendar.MONTH);
-		int ultimoDia = Calendar.getInstance().getActualMaximum(mes);
 		
-		if(dia == ultimoDia) {
+		if(dia == cal.get(Calendar.DAY_OF_MONTH)) {
 			saida = true;
 		}
 		
@@ -184,6 +183,8 @@ public class Pagamento {
 					
 				if(empregado instanceof Horista) {
 					
+					this.folha = new Folha(cal ,empregado, empregado.salarioBruto, empregado.salarioLiquido);
+					
 					((Horista) empregado).calcularSalarioLiquido(cal);
 						
 					if(cal.get(Calendar.DAY_OF_WEEK) == 6) {
@@ -191,17 +192,18 @@ public class Pagamento {
 							" atraves " + empregado.getMetodoPagamento());
 					}
 					
-					this.folha = new Folha(cal ,empregado);
 				}
 						
 				if(empregado instanceof Comissionados) {
+					this.folha = new Folha(cal ,empregado, ((Comissionados) empregado).getSalario2Semanas(), empregado.salarioLiquido, !((Comissionados) empregado).isPrimeiraSemana());
+					
 					((Comissionados) empregado).calcularSalario2Semanas(cal);	
 					
 					if(cal.get(Calendar.DAY_OF_WEEK) == 6) {
 					
 						if( ((Comissionados) empregado).isPrimeiraSemana() ) {
 							
-							System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
+							System.out.println("Salario de " + ((Comissionados) empregado).getSalario2Semanas() + " pago ao funcionario " + empregado.getNome() + 
 								" atraves " + empregado.getMetodoPagamento());
 							
 							((Comissionados) empregado).setPrimeiraSemana(false);
@@ -209,16 +211,19 @@ public class Pagamento {
 						
 						else {
 							((Comissionados) empregado).setPrimeiraSemana(true);
-						}	
+						}
 					}
+					
 				}
 				
 				if(empregado instanceof Assalariado) {
+					this.folha = new Folha(cal ,empregado, ((Assalariado) empregado).getSalarioFinal(), empregado.salarioLiquido);
+					
 					((Assalariado) empregado).calcularSalarioFinal(cal);
 					
 					if(isUltimoDiaUtil(cal)) {
 										
-						System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
+						System.out.println("Salario de " + ((Assalariado) empregado).getSalarioFinal() + " pago ao funcionario " + empregado.getNome() + 
 								" atraves " + empregado.getMetodoPagamento());
 					}
 					

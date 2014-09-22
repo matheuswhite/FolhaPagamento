@@ -28,6 +28,8 @@ public class Cartao implements Acoes{
 		Empregado temp = pagamento.getEmpregados().get(index);
 		
 		temp.baterPonto(this.cartao.ponto, this.dia);
+		
+		System.out.println("Redo: Lançar cartao de ponto");
 	}
 
 	@Override
@@ -38,6 +40,7 @@ public class Cartao implements Acoes{
 		
 		temp.baterPonto(this.cartaoAntigo.ponto, this.dia);
 		
+		System.out.println("Undo: Lançar cartao de ponto");
 	}
 
 }

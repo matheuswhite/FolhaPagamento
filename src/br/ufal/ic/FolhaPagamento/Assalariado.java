@@ -30,18 +30,23 @@ public class Assalariado extends Empregado{
 		return this.salarioFinal;
 	}
 	
+	public void setSalarioFinal(double salario) {
+		this.salarioFinal = salario;
+	}
+	
+	public void setSalarioLiquido(double salario) {
+		this.salarioLiquido = salario;
+	}
+	
 	//toda vez que rodar a folha de pagamento executar esse metodo
 	public void calcularSalarioFinal(GregorianCalendar cal) {
 		int dia = cal.get(Calendar.DATE);
 		
 		super.calcularSalarioLiquido(cal);
 		
-		if(this.pontos[dia] >= 8) {
-			this.salarioFinal += this.salarioLiquido * this.TAXA_POR_DIA;
-		}
-		else {
-			this.salarioFinal += this.salarioLiquido * this.TAXA_POR_DIA * this.TAXA_POR_HORA * this.pontos[dia];
-		}
+		
+		this.salarioFinal += this.salarioLiquido * this.TAXA_POR_DIA * this.pontos[dia] * this.TAXA_POR_HORA;
+		
 	}
 	
 }

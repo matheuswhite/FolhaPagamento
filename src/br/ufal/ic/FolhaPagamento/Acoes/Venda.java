@@ -27,6 +27,7 @@ public class Venda implements Acoes{
 		
 		vendas.get(cal).add(venda);
 		
+		System.out.println("Redo: Lançar venda");
 	}
 
 	@Override
@@ -37,6 +38,8 @@ public class Venda implements Acoes{
 		Map<GregorianCalendar, List<Double>> vendas = ((Comissionados) temp).getVendasTotal();
 		
 		vendas.get(cal).remove(venda);
+		
+		System.out.println("Undo: Lançar venda");
 	}
 
 }

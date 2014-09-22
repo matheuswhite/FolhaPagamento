@@ -16,7 +16,13 @@ public class Horista extends Empregado{
 		this.salarioPorHora = salarioPorHora;
 	}
 	
+	public void setSalariobruto(double salario) {
+		this.salarioBruto = salario;
+	}
 	
+	public void setSalarioLiquido(double salario) {
+		this.salarioLiquido = salario;
+	}
 	
 	
 	public void calcularSalarioBruto(double salarioPorHora, GregorianCalendar cal) {

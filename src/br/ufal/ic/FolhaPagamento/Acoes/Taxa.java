@@ -18,12 +18,16 @@ public class Taxa implements Acoes{
 	public void refaz(Pagamento pagamento) {
 		this.empregado.setSalarioProximoMes(valor, mes);
 		this.empregado.setDebitoMes(true, mes);
+		
+		System.out.println("Redo: Lançar taxa extra");
 	}
 
 	@Override
 	public void desfaz(Pagamento pagamento) {
 		this.empregado.setSalarioProximoMes(valor, mes);
 		this.empregado.setDebitoMes(false, mes);
+		
+		System.out.println("Undo: Lançar taxa extra");
 	}
 
 }

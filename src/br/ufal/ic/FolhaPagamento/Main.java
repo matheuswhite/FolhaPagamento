@@ -177,6 +177,7 @@ public class Main {
 	}
 	
 	private void menuPrincipal() {
+		System.out.println("Data atual: " + this.systemDate.getTime().toString());
 		System.out.println("1- Adicionar empregados");
 		System.out.println("2- Remover empregado");
 		System.out.println("3- Lançar cartao de ponto");

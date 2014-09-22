@@ -16,12 +16,16 @@ public class Alterar implements Acoes{
 	public void refaz(Pagamento pagamento) {
 		pagamento.getEmpregados().remove(empregadoAntigo);
 		pagamento.getEmpregados().add(empregadoNovo);
+		
+		System.out.println("Redo: Alterar Empregado");
 	}
 
 	@Override
 	public void desfaz(Pagamento pagamento) {
 		pagamento.getEmpregados().remove(empregadoNovo);
 		pagamento.getEmpregados().add(empregadoAntigo);
+		
+		System.out.println("Undo: Alterar Empregado");
 	}
 
 }
