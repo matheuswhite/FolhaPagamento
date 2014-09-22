@@ -562,13 +562,19 @@ public class Main {
 						
 						System.out.println("Digite a taxa sindical: \n");
 						taxaSindical = scan.nextDouble();
+						
+						exit = true;
 					}
 					else {
 						pertenceSindicato = true;
 					}
 					break;
+				case 2:
+					exit = true;
+					break;
 				case 3:
 					pertenceSindicato = temp.isSindicato();
+					exit = true;
 					break;
 				default:
 					System.out.println("Escolha uma das opcões abaixo.");
@@ -601,12 +607,14 @@ public class Main {
 					
 					System.out.println("Salario por hora:");
 					salario = scan.nextDouble();
-
+					
 					Horista horista = new Horista(nome, endereco, temp.getId(), salario);
 					
 					pagamento.AlterarEmpregado(nome, endereco, horista, metodoPagamento, pertenceSindicato, matricula, taxaSindical, temp);
 					
 					this.fichaEmpregado(horista);
+					
+					exit = true;
 					break;
 				case 2:
 					
@@ -618,6 +626,8 @@ public class Main {
 					pagamento.AlterarEmpregado(nome, endereco, assalariado, metodoPagamento, pertenceSindicato, matricula, taxaSindical, temp);
 					
 					this.fichaEmpregado(assalariado);
+					
+					exit = true;
 					break;
 				case 3:
 					
@@ -636,6 +646,8 @@ public class Main {
 								taxaSindical, temp);
 					
 					this.fichaEmpregado(comissionado);
+					
+					exit = true;
 					break;
 				default:
 					System.out.println("Escolha uma das opcões abaixo.");

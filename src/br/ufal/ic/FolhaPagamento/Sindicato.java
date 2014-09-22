@@ -1,7 +1,6 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.List;
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
@@ -39,6 +38,8 @@ public class Sindicato {
 		while(!exit) {
 			id = gerador.nextInt(limiteAssociados);
 			
+			System.out.println(String.valueOf(id));
+			
 			if(!findAssociado(id)) {
 				exit = true;
 			}
@@ -48,10 +49,18 @@ public class Sindicato {
 	}
 	
 	public void addAssociado(Empregado empregado, double taxa) {
+		System.out.println("passei5");
+		
 		int id = gerarId(this.limiteAssociados);
 		
-		this.associados.put(id, empregado);
-			
+		System.out.println("passei2");
+		try {
+			this.associados.put(id, empregado);
+		}
+		catch (Exception ex) {
+			System.out.println("Exception na HashMap");
+		}
+		
 		empregado.AssociarAoSindicato(true, id);
 		
 		this.setTaxaFixa(taxa, id);
@@ -63,9 +72,11 @@ public class Sindicato {
 		
 		try {
 			Empregado empregado = this.associados.get(i);
-			find = true;
+			if(empregado != null) {
+				find = true;
+			}
 		}
-		catch (NullPointerException e) {
+		catch (ArrayIndexOutOfBoundsException e) {
 			System.out.println("Empregado nao encontrado! " + e.getMessage());
 		}
 		

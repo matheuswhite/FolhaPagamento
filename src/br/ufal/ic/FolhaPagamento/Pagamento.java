@@ -144,10 +144,11 @@ public class Pagamento {
 			if(empregado.isSindicato()) {
 				this.sindicato.addAssociado(empregado, taxaSindical);
 			}
-			
 			else {
 				this.sindicato.delAssociado(empregadoAntigo.getMatricula());
 			}
+			
+			System.out.println("passei10");
 			
 			this.empregados.remove(empregadoAntigo);
 			this.empregados.add(empregado);
