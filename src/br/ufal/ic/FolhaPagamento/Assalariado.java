@@ -7,16 +7,36 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Assalariado extends Empregado{
+	private double salarioFinal;
 	
-	public Assalariado(String nome, String endereco, int id) {
+	private final double TAXA_POR_DIA = 0.05;
+	private final double TAXA_POR_HORA = 0.125;
+	
+	public Assalariado(String nome, String endereco, int id, double salarioFixo) {
 		super(nome, endereco, id);
-	}
-	
-	public void setSalarioBruto(double salarioFixo) {
-		this.salarioBruto = salarioFixo;
+		
+		super.calcularSalarioBruto(salarioFixo);
+		
+		this.salarioFinal = 0;
 	}
 	
 	public double getSalarioFixo() {
 		return this.salarioBruto;
+	}
+	
+	public double getSalarioFinal() {
+		return this.salarioFinal;
+	}
+	
+	//toda vez que rodar a folha de pagamento executar esse metodo
+	public void calcularSalarioFinal(int dia) {
+		super.calcularSalarioLiquido();
+		
+		if(this.pontos[dia] >= 8) {
+			this.salarioFinal += this.salarioLiquido * this.TAXA_POR_DIA;
+		}
+		else {
+			this.salarioFinal += this.salarioLiquido * this.TAXA_POR_DIA * this.TAXA_POR_HORA * this.pontos[dia];
+		}
 	}
 }

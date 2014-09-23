@@ -19,7 +19,9 @@ public class Empregado {
 	protected double salarioBruto;
 	protected double salarioLiquido;
 	protected double salarioProximoMes;
+	protected double taxaFixa;
 	protected boolean debitoProximoMes = false;
+	
 	
 	protected int pontos[];
 	
@@ -30,6 +32,7 @@ public class Empregado {
 		this.endereco = endereco;
 		this.salarioBruto = 0.0;
 		this.salarioLiquido = 0.0;
+		this.taxaFixa = 0.0;
 		
 		this.salarioProximoMes = 0.0;
 		
@@ -103,8 +106,8 @@ public class Empregado {
 		this.salarioBruto = salario;
 	}
 	
-	protected void calcularSalarioLiquido(double taxafixa) {
-		this.salarioLiquido += taxafixa + this.salarioBruto;
+	protected void calcularSalarioLiquido() {
+		this.salarioLiquido += this.taxaFixa + this.salarioBruto;
 		
 		if(this.debitoProximoMes) {
 			this.salarioLiquido += this.salarioProximoMes;
