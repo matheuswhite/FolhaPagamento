@@ -1,6 +1,8 @@
 package br.ufal.ic.FolhaPagamento;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +31,10 @@ public class Assalariado extends Empregado{
 	}
 	
 	//toda vez que rodar a folha de pagamento executar esse metodo
-	public void calcularSalarioFinal(int dia) {
-		super.calcularSalarioLiquido();
+	public void calcularSalarioFinal(GregorianCalendar cal) {
+		int dia = cal.get(Calendar.DATE);
+		
+		super.calcularSalarioLiquido(cal);
 		
 		if(this.pontos[dia] >= 8) {
 			this.salarioFinal += this.salarioLiquido * this.TAXA_POR_DIA;

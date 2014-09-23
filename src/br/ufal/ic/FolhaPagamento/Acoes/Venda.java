@@ -1,6 +1,7 @@
 package br.ufal.ic.FolhaPagamento.Acoes;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -10,11 +11,11 @@ public class Venda implements Acoes{
 
 	private Empregado empregado;
 	private double venda;
-	private Date date;
+	private GregorianCalendar cal;
 	
-	public Venda(double venda, Date date, Empregado empregado) {
+	public Venda(double venda, GregorianCalendar cal, Empregado empregado) {
 		this.venda = venda;
-		this.date = date;
+		this.cal = cal;
 		this.empregado = empregado;
 	}
 	
@@ -23,9 +24,9 @@ public class Venda implements Acoes{
 		int index = pagamento.getEmpregados().indexOf(empregado);
 		Empregado temp = pagamento.getEmpregados().get(index);
 		
-		Map<Date, List<Double> > vendas = ((Comissionados) temp).getVenda();
+		Map<GregorianCalendar, List<Double>> vendas = ((Comissionados) temp).getVendasTotal();
 		
-		vendas.get(date).add(venda);
+		vendas.get(cal).add(venda);
 		
 	}
 
@@ -34,9 +35,9 @@ public class Venda implements Acoes{
 		int index = pagamento.getEmpregados().indexOf(empregado);
 		Empregado temp = pagamento.getEmpregados().get(index);
 		
-		Map<Date, List<Double> > vendas = ((Comissionados) temp).getVenda();
+		Map<GregorianCalendar, List<Double>> vendas = ((Comissionados) temp).getVendasTotal();
 		
-		vendas.get(date).remove(venda);
+		vendas.get(cal).remove(venda);
 	}
 
 }

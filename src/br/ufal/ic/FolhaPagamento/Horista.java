@@ -8,45 +8,40 @@ public class Horista extends Empregado{
 	private double salarioPorHora;
 	private int horasTabalhadas;
 	private int horasExtras;
+	private final double TAXA_HORA_EXTRA = 1.5;
 	
-	public Horista(String nome, String endereco, int id) {
+	public Horista(String nome, String endereco, int id, double salarioPorHora) {
 		super(nome, endereco, id);
+		
+		this.salarioPorHora = salarioPorHora;
 	}
 	
-	public void setSalarioPorHora(double salarioPorHora) {
-		this.salarioPorHora = salarioPorHora;
-		this.setHorasTrabalhadas();
+	
+	
+	
+	public void calcularSalarioBruto(double salarioPorHora, GregorianCalendar cal) {
+		
+		int dia = cal.get(Calendar.DATE);
+		
+		if(this.pontos[dia] > 8) {
+			this.salarioBruto += this.salarioPorHora * this.pontos[dia];
+		}
+		else {
+			this.salarioBruto += this.salarioPorHora * this.pontos[dia] * this.TAXA_HORA_EXTRA;
+		}
+		
 	}
 	
 	public double getSalarioPorHora() {
 		return this.salarioPorHora;
 	}
 	
-	//@SuppressWarnings("deprecation")
-	public void setHorasTrabalhadas() {
-		Calendar cal = new GregorianCalendar();
-		Calendar calFim = new GregorianCalendar();
+	//toda vez que rodar a folha de pagamento executar esse metodo
+	@Override
+	public void calcularSalarioLiquido(GregorianCalendar cal) {
+		this.calcularSalarioBruto(this.salarioPorHora, cal);
 		
-		cal.setTime(pontoInicio);
-		calFim.setTime(pontoFim);
-		
-		this.horasTabalhadas = cal.get(Calendar.HOUR_OF_DAY) - calFim.get(Calendar.HOUR_OF_DAY);
-		
-		//this.horasTabalhadas = this.pontoInicio.getHours() - this.pontoFim.getHours();
+		super.calcularSalarioLiquido(cal);
 	}
 	
-	public void setSalarioBruto() {
-		this.setHorasTrabalhadas();
-		this.setHorasExtras();
-		
-		this.salarioBruto += this.horasTabalhadas * this.salarioPorHora;
-		this.salarioBruto += this.horasExtras * 1.5;
-	}
-	
-	public void setHorasExtras() {
-		if(this.horasTabalhadas >= 8 && this.horasTabalhadas <= 24) {
-			int aux = this.horasTabalhadas - 8;
-			this.horasExtras = aux;
-		}
-	}
 }

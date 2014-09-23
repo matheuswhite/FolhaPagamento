@@ -6,22 +6,24 @@ public class Taxa implements Acoes{
 
 	private Empregado empregado;
 	private double valor;
+	private int mes;
 	
-	public Taxa(Empregado empregado, double valor) {
+	public Taxa(Empregado empregado, double valor, int mes) {
 		this.empregado = empregado;
 		this.valor = valor;
+		this.mes = mes;
 	}
 	
 	@Override
 	public void refaz(Pagamento pagamento) {
-		this.empregado.setSalarioProximoMes(valor, false);
-		this.empregado.setDebitoProximoMes(true);
+		this.empregado.setSalarioProximoMes(valor, mes);
+		this.empregado.setDebitoMes(true, mes);
 	}
 
 	@Override
 	public void desfaz(Pagamento pagamento) {
-		this.empregado.setSalarioProximoMes(valor, true);
-		this.empregado.setDebitoProximoMes(false);
+		this.empregado.setSalarioProximoMes(valor, mes);
+		this.empregado.setDebitoMes(false, mes);
 	}
 
 }

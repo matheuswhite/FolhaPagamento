@@ -1,6 +1,7 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.Calendar;
+
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -14,16 +15,19 @@ public class Comissionados extends Assalariado {
 	private double salario2Semanas;
 	private final double TAXA_POR_DIA = 0.1;
 	private boolean primeiraSemana = true;
-	private Map<Date, List<Double> > vendas;
+	private Map<GregorianCalendar, List<Double> > vendas;
 	
 	
 	public Comissionados(String nome, String endereco, int id, double salarioFixo) {
 		super(nome, endereco, id, salarioFixo);
 		
-		vendas = new HashMap<Date, List<Double> >();
+		vendas = new HashMap<GregorianCalendar, List<Double> >();
 		comissao = 0.0;
 		salario2Semanas = 0.0;
 	}
+	
+	
+	
 	
 	/* Gets e Sets*/
 	
@@ -43,47 +47,54 @@ public class Comissionados extends Assalariado {
 		return this.comissao;
 	}
 	
-	public Map<Date, List<Double> > getVenda() {
+	public List<Double> getVendas(GregorianCalendar cal) {
+		return this.vendas.get(cal);
+	}
+	
+	public Map<GregorianCalendar, List<Double> > getVendasTotal() {
 		return this.vendas;
 	}
 	
 	/* Gets e Sets */
 	
-	public void registrarVenda(Date date, double valor) {
+	
+	
+	
+	public void registrarVenda(GregorianCalendar cal, double valor) {
 		List<Double> aux;
-		if(vendas.get(date) != null) {
-			aux = vendas.get(date);
+		
+		try {
+			aux = this.vendas.get(cal);
 			aux.add(valor);
-			vendas.put(date, aux);
+			vendas.put(cal, aux);
 		}
-		else {
+		catch ( NullPointerException e ) {
 			aux = new LinkedList<Double>();
 			aux.add(valor);
-			vendas.put(date, aux);
+			vendas.put(cal, aux);
 		}
 	}
 
-	public void calcularSalarioLiquido(Date date) {
+	@Override
+	public void calcularSalarioLiquido(GregorianCalendar cal) {
 		
-		List<Double> temp = this.vendas.get(date);
+		List<Double> temp = this.getVendas(cal);
 		double valorTotalVendas = 0.0;
 		
 		for(int i = 0; i < temp.size(); ++i) {
 			valorTotalVendas += temp.get(i);
 		}
 		
-		this.calcularSalarioLiquido();
+		super.calcularSalarioLiquido(cal);
 		
 		this.salarioLiquido += this.comissao * valorTotalVendas;
 	}
 	
 	//toda vez que rodar a folha de pagamento executar esse metodo
-	public void calcular_Salario2Semanas(Date date) {
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(date);
+	public void calcularSalario2Semanas(GregorianCalendar cal) {
 		int dia = cal.get(Calendar.DATE);
 		
-		this.calcularSalarioLiquido(date);
+		this.calcularSalarioLiquido(cal);
 		
 		
 		if(this.pontos[dia] >= 8) {
@@ -94,4 +105,5 @@ public class Comissionados extends Assalariado {
 		}
 		
 	}
+	
 }

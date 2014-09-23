@@ -1,6 +1,7 @@
 package br.ufal.ic.FolhaPagamento;
 
 import java.util.List;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
@@ -15,14 +16,17 @@ public class Sindicato {
 		this.taxaFixa = new HashMap<Empregado, Double>();
 	}
 	
+	
+	
+	
 	public void delAssociado(int matricula) {
-		Empregado empregado = this.associados.get(matricula);
-		if(empregado != null) {
+		try {
+			Empregado empregado = this.associados.get(matricula);
 			taxaFixa.remove(empregado);
 			associados.remove(matricula);
 		}
-		else {
-			System.out.println("eRRoR - empregado não associado! (193)");
+		catch (NullPointerException e) {
+			System.out.println("Empregado não encontrado!\nMude o numero de matricula. " + e.getMessage());
 		}
 	}
 	
@@ -43,60 +47,53 @@ public class Sindicato {
 		return id;
 	}
 	
-	public void addAssociado(Empregado empregado) {
+	public void addAssociado(Empregado empregado, double taxa) {
+		int id = gerarId(this.limiteAssociados);
 		
-		
-			int id = gerarId(this.limiteAssociados);
-		
-			this.associados.put(id, empregado);
+		this.associados.put(id, empregado);
 			
-			empregado.AssociarAoSindicato(true, id);
+		empregado.AssociarAoSindicato(true, id);
 		
-		
+		this.setTaxaFixa(taxa, id);
 	}
+	
 	
 	protected boolean findAssociado(int i) {
 		boolean find = false;
 		
-		if(!this.associados.isEmpty()) {
-			if(this.associados.get(Integer.valueOf(i)) != null) {
-				find = true;
-			}
+		try {
+			Empregado empregado = this.associados.get(i);
+			find = true;
+		}
+		catch (NullPointerException e) {
+			System.out.println("Empregado nao encontrado! " + e.getMessage());
 		}
 		
 		return find;
 	}
 	
 	
-	public void setTaxa(double taxa, int matricula) {
-		if(this.associados.containsKey(matricula)) {
+	public void setTaxaFixa(double taxa, int matricula) {
+		try {
 			Empregado empregado = this.associados.get(matricula);
 			this.taxaFixa.put(empregado, taxa);
+			empregado.taxaFixa -= taxa;
 		}
-		else {
-			System.out.println("eRROR - empregado não encontrado! (204)");
-		}
+		catch ( NullPointerException e) {
+			System.out.println("Empregado nao Encontrado! " + e.getMessage());
+		}	
 	}
 	
-	public void cobrarTaxaFixa() {
-		for(int x = 0; x < this.associados.size(); ++x) {
-			if(this.associados.containsKey(x)) {
-				Empregado empregado = this.associados.get(x); 
-				empregado.salarioLiquido = empregado.salarioBruto - this.taxaFixa.get(empregado);
-			}
+	public void cobrarTaxaExtra(double valor, int matricula, int mes) {
+		try {
+			Empregado empregado = this.associados.get(matricula);
+			empregado.salarioProximoMes[mes] -= valor;
+			empregado.debitoMes[mes] = true;
 		}
+		catch (NullPointerException e) {
+			System.out.println("Empregado não encontrado!" + e.getMessage());
+		}
+		
 	}
 	
-	public void cobrarTaxaFixaIndividual(Empregado empregado) {
-		empregado.salarioLiquido = empregado.salarioBruto - this.taxaFixa.get(empregado);
-	}
-	
-	public void cobrarTaxaExtra(double valor, int matricula) {
-		Empregado empregado = this.associados.get(matricula);
-		if(empregado == null) {
-			System.out.println("Empregado null! Socorro!!!!!");
-		}
-		empregado.salarioProximoMes -= valor;
-		empregado.debitoProximoMes = true;
-	}
 }

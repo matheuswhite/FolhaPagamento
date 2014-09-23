@@ -9,18 +9,18 @@ public class Cartao implements Acoes{
 	private Cartao cartao;
 	
 	private Empregado empregado;
-	private Date inicio;
-	private Date fim;
+	private int ponto;
+	private int dia;
 	
 	public Cartao(Cartao cartaoAntigo, Cartao cartao) {
 		this.cartaoAntigo = cartaoAntigo;
 		this.cartao = cartao;
 	}
 	
-	public Cartao(Empregado empregado, Date inicio, Date fim) {
+	public Cartao(Empregado empregado, int ponto, int dia) {
 		this.empregado = empregado;
-		this.inicio = inicio;
-		this.fim = fim;
+		this.ponto = ponto;
+		this.dia = dia;
 	}
 	
 	@Override
@@ -29,7 +29,7 @@ public class Cartao implements Acoes{
 		
 		Empregado temp = pagamento.getEmpregados().get(index);
 		
-		temp.baterPonto(this.cartao.inicio, this.cartao.fim);
+		temp.baterPonto(this.cartao.ponto, this.dia);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class Cartao implements Acoes{
 		
 		Empregado temp = pagamento.getEmpregados().get(index);
 		
-		temp.baterPonto(this.cartaoAntigo.inicio, this.cartaoAntigo.fim);
+		temp.baterPonto(this.cartaoAntigo.ponto, this.dia);
 		
 	}
 

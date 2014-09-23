@@ -31,6 +31,9 @@ public class Pagamento {
 		listAcoes = new ListAcoes();
 	}
 	
+	
+	/* Gets */
+	
 	public List<Empregado> getEmpregados() {
 		return this.empregados;
 	}
@@ -43,18 +46,19 @@ public class Pagamento {
 		return this.listAcoes;
 	}
 	
-	public void msgError(String string) {
-		System.out.println("Error - " + string);
-	}
+	/* Gets */
+	
+	
 	
 	private boolean isRegistrado(Empregado empregado) {
-		boolean retorno = false;
 		
-		if(this.empregados.contains(empregado)) {
-			retorno = true;
+		for(Empregado e : empregados) {
+			if(e.getId() == empregado.getId()) {
+				return true;
+			}
 		}
 		
-		return retorno;
+		return false;
 	}
 	
 	public void AdicionarEmpregado(Empregado empregado) {
@@ -65,202 +69,173 @@ public class Pagamento {
 			this.listAcoes.add(adicionar);
 		}
 		else {
-			this.msgError("Empregado já registrado");
+			System.out.println("Empregado ja cadastrado");
 		}
 	}
 	
 	public void RemoverEmpregado(Empregado empregado) {
-		if(!this.empregados.isEmpty()) {
-			if(isRegistrado(empregado)) {
-				this.empregados.remove(empregado);
+		try {
+			this.empregados.remove(empregado);
 				
-				this.remover = new Remover(empregado);
-				this.listAcoes.add(remover);
-			}
-			else {
-				this.msgError("Empregado não registrado");
-			}
+			this.remover = new Remover(empregado);
+			this.listAcoes.add(remover);
 		}
-		else {
-			this.msgError("Nenhum empregado registrado");
+		catch (NullPointerException e) {
+			System.out.println("Empregado ainda não cadastrado" + e.getMessage());
 		}
+		
 	}
 	
-	public void LancarCartaoPonto(Empregado empregado, Date inicio, Date fim) {
-		if(isRegistrado(empregado)) {
+	public void LancarCartaoPonto(Empregado empregado, GregorianCalendar inicio, GregorianCalendar fim) {
+		int dia = inicio.get(Calendar.DATE);
+		
+		try {
 			int index = this.empregados.indexOf(empregado);
 			
-			cartaoAntigo = new Cartao(empregado, empregado.pontoInicio, empregado.pontoFim);
+			cartaoAntigo = new Cartao(empregado, empregado.pontos[dia], dia);
 			
 			this.empregados.get(index).baterPonto(inicio, fim);
 			
-			cartao = new Cartao(empregado, inicio, fim);
+			cartao = new Cartao(empregado, empregado.pontos[dia], dia);
 			
 			cartaoAux = new Cartao(cartaoAntigo, cartao);
 			
 			this.listAcoes.add(cartaoAux);
 		}
-		else {
-			this.msgError("Empregado não registrado");
+		catch (Exception e) {
+			System.out.println("Empregado não registrado" + e.getMessage());
 		}
+		
 	}
 	
-	public void LancarVenda(Empregado empregado, double venda, Date date) {
+	public void LancarVenda(Empregado empregado, double venda, GregorianCalendar cal) {
 		if(empregado instanceof Comissionados) {
-			if(isRegistrado(empregado)) {
-				((Comissionados) empregado).registrarVenda(date, venda);
+			
+			try {
+				((Comissionados) empregado).registrarVenda(cal, venda);
 				
-				this.venda = new Venda(venda, date, empregado);
+				this.venda = new Venda(venda, cal, empregado);
 				
 				this.listAcoes.add(this.venda);
 			}
-			else {
-				this.msgError("Empregado não registrado");
+			catch ( NullPointerException e){
+				System.out.println("Empregado não registrado" + e.getMessage());
 			}
 		}
 		else {
-			this.msgError("Este empregado não é comissionado");
+			System.out.println("Este empregado não é comissionado");
 		}
 	}
 	
-	public void LancarTaxaExtra(Empregado empregado, double valor) {
-		if(empregado.isSindicato()) {
-			this.sindicato.cobrarTaxaExtra(valor, empregado.getMatricula());
-			
-			this.taxa = new Taxa(empregado, valor);
-			
-			this.listAcoes.add(this.taxa);
-		}
-		else {
-			this.msgError("Empregado não registrado no sindicato");
-		}
-	}
-	
-	public void AlterarEmpregado(String nome, String endereco, 
-			Empregado empregado, String metodoPagamento, 
-			boolean pertenceSindicato, int matricula, double taxaSindical, 
-			Empregado empregadoAntigo) {
+	public void LancarTaxaExtra(Empregado empregado, double valor, GregorianCalendar cal) {
+		int mes = cal.get(Calendar.MONTH);
 		
-		if(isRegistrado(empregadoAntigo)) {
+		this.sindicato.cobrarTaxaExtra(valor, empregado.getMatricula(), mes);
+		
+		this.taxa = new Taxa(empregado, valor, mes);
+			
+		this.listAcoes.add(this.taxa);
+		
+		System.out.println("Empregado não registrado no sindicato");
+	}
+	
+	public void AlterarEmpregado(String nome, String endereco, Empregado empregado, String metodoPagamento, 
+			boolean pertenceSindicato, int matricula, double taxaSindical, Empregado empregadoAntigo) {
+		
+		
+		try {
 			empregado.setNome(nome);
 			empregado.setEndereco(endereco);
 			empregado.setMetodoPagamento(metodoPagamento);
 			empregado.setSindicato(pertenceSindicato);
 			
 			if(empregado.isSindicato()) {
-				sindicato.addAssociado(empregado);
+				this.sindicato.addAssociado(empregado, taxaSindical);
 			}
 			
 			else {
-				sindicato.delAssociado(empregadoAntigo.getMatricula());
+				this.sindicato.delAssociado(empregadoAntigo.getMatricula());
 			}
-			
-			this.sindicato.setTaxa(taxaSindical, empregado.getMatricula());
 			
 			this.empregados.remove(empregadoAntigo);
 			this.empregados.add(empregado);
 			
 			//this.listAcoes.add("ALT");
 		}
-		else {
-			this.msgError("Empregado não registrado (187)");
+		catch (NullPointerException e) {
+			System.out.println("Empregado " + empregadoAntigo.getNome() + " não encontrado" + e.getMessage());
 		}
+		
 	}
 	
-	private boolean isUltimoDiaUtil(Date date) {
+	//espero que dê certo
+	private boolean isUltimoDiaUtil(GregorianCalendar cal) {
 		boolean saida = false;
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(date);
 		
-		cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+		int dia = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		int mes = cal.get(Calendar.MONTH);
+		int ultimoDia = Calendar.getInstance().getActualMaximum(mes);
 		
-		
-		if(cal.getTime().compareTo(date) == 0) {
-			System.out.println("mesmo dia!");
-			
+		if(dia == ultimoDia) {
 			saida = true;
 		}
 		
 		return saida;
 	}
 	
-	public void rodarFolhaPagamento(Date date) {
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(date);
+	public void rodarFolhaPagamento(GregorianCalendar cal) {
 		
-		if(this.empregados.isEmpty()) {
-			this.msgError("Sem empregados cadastrados");
+		try {
 			
-			return ;
-		}
-		
-		if(cal.get(Calendar.DAY_OF_WEEK) == 6) {
-			
-			for(int i = 0; i < this.empregados.size(); ++i) {
-				
-				Empregado empregado = this.empregados.get(i);
-				
+			for(Empregado empregado : this.empregados) {
+					
 				if(empregado instanceof Horista) {
-					((Horista) empregado).setSalarioBruto();
-					empregado.calcularSalarioLiquido();
 					
-					if(empregado.isSindicato()) {
-						sindicato.cobrarTaxaFixaIndividual(empregado);
-					}
-					
-					System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
+					((Horista) empregado).calcularSalarioLiquido(cal);
+						
+					if(cal.get(Calendar.DAY_OF_WEEK) == 6) {
+						System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
 							" atraves " + empregado.getMetodoPagamento());
+					}
+						
 				}
-				
+						
 				if(empregado instanceof Comissionados) {
+					((Comissionados) empregado).calcularSalario2Semanas(cal);	
 					
-					if( ((Comissionados) empregado).isPrimeiraSemana() ) {
-						
-						((Comissionados) empregado).calcular_Salario2Semanas();
-						empregado.calcularSalarioLiquido();
-						
-						if(empregado.isSindicato()) {
-							sindicato.cobrarTaxaFixaIndividual(empregado);
+					if(cal.get(Calendar.DAY_OF_WEEK) == 6) {
+					
+						if( ((Comissionados) empregado).isPrimeiraSemana() ) {
+							
+							System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
+								" atraves " + empregado.getMetodoPagamento());
+							
+							((Comissionados) empregado).setPrimeiraSemana(false);
 						}
 						
-						System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
-								" atraves " + empregado.getMetodoPagamento());
-						
-						((Comissionados) empregado).setPrimeiraSemana(false);
+						else {
+							((Comissionados) empregado).setPrimeiraSemana(true);
+						}	
 					}
-					
-					else {
-						((Comissionados) empregado).setPrimeiraSemana(true);
-					}
-					
 				}
 				
-			}// end for
-			
-		} //end if
-		
-		if(isUltimoDiaUtil(date)) {
-			
-			for(int i = 0; i < this.empregados.size(); ++i) {
-				
-				Empregado empregado = this.empregados.get(i);
-				
 				if(empregado instanceof Assalariado) {
-					empregado.calcularSalarioLiquido();
+					((Assalariado) empregado).calcularSalarioFinal(cal);
 					
-					
-					if(empregado.isSindicato()) {
-						sindicato.cobrarTaxaFixaIndividual(empregado);
+					if(isUltimoDiaUtil(cal)) {
+										
+						System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
+								" atraves " + empregado.getMetodoPagamento());
 					}
 					
-					System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
-							" atraves " + empregado.getMetodoPagamento());
 				}
 				
 			}
 			
 		}
-		
+		catch ( NullPointerException e ) {
+			System.out.println("Empregado não encontrado!" + e.getMessage());
+		}
 		
 		//this.listAcoes.add("FOL");
 	}

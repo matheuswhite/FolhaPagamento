@@ -18,14 +18,12 @@ public class Empregado {
 	
 	protected double salarioBruto;
 	protected double salarioLiquido;
-	protected double salarioProximoMes;
+	protected double salarioProximoMes[];
 	protected double taxaFixa;
-	protected boolean debitoProximoMes = false;
-	
+	protected boolean debitoMes[];
 	
 	protected int pontos[];
 	
-	//verificar o for
 	public Empregado(String nome, String endereco, int id) {
 		this.id = id;
 		this.nome = nome;
@@ -34,13 +32,16 @@ public class Empregado {
 		this.salarioLiquido = 0.0;
 		this.taxaFixa = 0.0;
 		
-		this.salarioProximoMes = 0.0;
+		//janeiro é 0
+		this.salarioProximoMes = new double[11];
+		this.debitoMes = new boolean[11];
 		
 		this.sindicato = false;
 		
+		//horas trabalhadas num dia
 		this.pontos = new int[31];
 		
-		for(int i : this.pontos) {
+		for(int i = 1; i <= this.pontos.length; ++i) {
 			this.pontos[i] = -1;
 		}
 		
@@ -87,8 +88,12 @@ public class Empregado {
 		return this.sindicato;
 	}
 	
-	public void setDebitoProximoMes(boolean valor) {
-		this.debitoProximoMes = valor;
+	public void setDebitoMes(boolean valor, int mes) {
+		this.debitoMes[mes] = valor;
+	}
+	
+	public void setSalarioProximoMes(double valor, int mes) {
+		this.salarioProximoMes[mes] = valor;
 	}
 	
 	public int getMatricula() {
@@ -106,43 +111,42 @@ public class Empregado {
 		this.salarioBruto = salario;
 	}
 	
-	public void calcularSalarioLiquido() {
+	public void calcularSalarioLiquido(GregorianCalendar cal) {
 		this.salarioLiquido += this.taxaFixa + this.salarioBruto;
+		int mes = cal.get(Calendar.MONTH);
 		
-		if(this.debitoProximoMes) {
-			this.salarioLiquido += this.salarioProximoMes;
+		if(this.debitoMes[mes]) {
+			this.salarioLiquido += this.salarioProximoMes[mes];
 		}
 	}	
 	
-	// ?!
-	public void setSalarioProximoMes(double valor, boolean mais) {
-		if(mais){
-			this.salarioProximoMes += valor;
+	
+	
+	public void baterPonto(GregorianCalendar cal, GregorianCalendar cal2) {
+		
+		int hora = cal.get(Calendar.HOUR_OF_DAY);
+		int hora2 = cal2.get(Calendar.HOUR_OF_DAY);
+		
+		int dia = cal.get(Calendar.DATE);
+		
+		if(this.pontos[dia] == -1) {
+			this.pontos[dia] = hora - hora2;
 		}
+		
 		else {
-			this.salarioProximoMes -= valor;
-		}
-	}
-	
-	
-	
-	//verificar o for
-	public void baterPonto(Date dateInicio, Date dateFim) {
-		GregorianCalendar cal = new GregorianCalendar();
-		GregorianCalendar cal2 = new GregorianCalendar();
-		
-		cal.setTime(dateInicio);
-		cal2.setTime(dateFim);
-		
-		int hours = cal.get(Calendar.HOUR_OF_DAY);
-		int hours2 = cal2.get(Calendar.HOUR_OF_DAY);
-		
-		for(int x : this.pontos) {
-			if(this.pontos[x] == -1) {
-				this.pontos[x] = hours - hours2;
-				return ;
-			}
+			this.pontos[dia] += hora - hora2; 
 		}
 		
 	}
+	
+	public void baterPonto(int horasTrabalhadas, int dia) {
+		if(this.pontos[dia] == -1) {
+			this.pontos[dia] = horasTrabalhadas;
+		}
+		
+		else {
+			this.pontos[dia] += horasTrabalhadas; 
+		}
+	}
+	
 }
