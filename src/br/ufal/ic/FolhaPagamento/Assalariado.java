@@ -10,7 +10,7 @@ public class Assalariado extends Empregado{
 	private double salarioFinal;
 	
 	private final double TAXA_POR_DIA = 0.05;
-	private final double TAXA_POR_HORA = 0.125;
+	protected final double TAXA_POR_HORA = 0.125;
 	
 	public Assalariado(String nome, String endereco, int id, double salarioFixo) {
 		super(nome, endereco, id);
@@ -20,7 +20,7 @@ public class Assalariado extends Empregado{
 		this.salarioFinal = 0;
 	}
 	
-	public double getSalarioFixo() {
+	protected double getSalarioFixo() {
 		return this.salarioBruto;
 	}
 	
@@ -39,4 +39,5 @@ public class Assalariado extends Empregado{
 			this.salarioFinal += this.salarioLiquido * this.TAXA_POR_DIA * this.TAXA_POR_HORA * this.pontos[dia];
 		}
 	}
+	
 }

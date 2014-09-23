@@ -106,7 +106,7 @@ public class Empregado {
 		this.salarioBruto = salario;
 	}
 	
-	protected void calcularSalarioLiquido() {
+	public void calcularSalarioLiquido() {
 		this.salarioLiquido += this.taxaFixa + this.salarioBruto;
 		
 		if(this.debitoProximoMes) {
