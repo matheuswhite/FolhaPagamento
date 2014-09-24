@@ -190,6 +190,8 @@ public class Pagamento {
 					if(cal.get(Calendar.DAY_OF_WEEK) == 6) {
 						System.out.println("Salario de " + empregado.salarioLiquido + " pago ao funcionario " + empregado.getNome() + 
 							" atraves " + empregado.getMetodoPagamento());
+						
+						empregado.salarioLiquido = 0;
 					}
 					
 				}
@@ -206,6 +208,8 @@ public class Pagamento {
 							System.out.println("Salario de " + ((Comissionados) empregado).getSalario2Semanas() + " pago ao funcionario " + empregado.getNome() + 
 								" atraves " + empregado.getMetodoPagamento());
 							
+							((Comissionados) empregado).setSalario2Semanas(0);
+							
 							((Comissionados) empregado).setPrimeiraSemana(false);
 						}
 						
@@ -216,7 +220,7 @@ public class Pagamento {
 					
 				}
 				
-				if(empregado instanceof Assalariado) {
+				else if(empregado instanceof Assalariado) {
 					this.folha = new Folha(cal ,empregado, ((Assalariado) empregado).getSalarioFinal(), empregado.salarioLiquido);
 					
 					((Assalariado) empregado).calcularSalarioFinal(cal);
@@ -225,6 +229,8 @@ public class Pagamento {
 										
 						System.out.println("Salario de " + ((Assalariado) empregado).getSalarioFinal() + " pago ao funcionario " + empregado.getNome() + 
 								" atraves " + empregado.getMetodoPagamento());
+						
+						((Assalariado) empregado).setSalarioFinal(0);
 					}
 					
 				}
@@ -234,7 +240,9 @@ public class Pagamento {
 			this.listAcoes.add(this.folha);
 		}
 		catch ( NullPointerException e ) {
-			System.out.println("Empregado não encontrado! " + e.getMessage());
+			System.out.println("Empregado não encontrado!3 " + e.getMessage());
+			e.printStackTrace();
+			
 		}
 		
 		

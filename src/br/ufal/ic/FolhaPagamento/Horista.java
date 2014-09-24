@@ -33,7 +33,8 @@ public class Horista extends Empregado{
 			this.salarioBruto = this.salarioPorHora * this.pontos[dia];
 		}
 		else {
-			this.salarioBruto = this.salarioPorHora * this.pontos[dia] * this.TAXA_HORA_EXTRA;
+			this.salarioBruto = this.salarioPorHora * 8 * this.TAXA_HORA_EXTRA;
+			this.salarioBruto += this.salarioPorHora * (this.pontos[dia] - 8) * this.TAXA_HORA_EXTRA;
 		}
 	}
 	

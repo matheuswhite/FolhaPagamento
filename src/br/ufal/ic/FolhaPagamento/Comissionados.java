@@ -26,9 +26,6 @@ public class Comissionados extends Assalariado {
 		salario2Semanas = 0.0;
 	}
 	
-	
-	
-	
 	/* Gets e Sets*/
 	
 	public boolean isPrimeiraSemana() {
@@ -48,7 +45,11 @@ public class Comissionados extends Assalariado {
 	}
 	
 	public List<Double> getVendas(GregorianCalendar cal) {
-		return this.vendas.get(cal);
+		cal.set(Calendar.HOUR, 12);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		
+		return this.vendas.get(cal.getTime());
 	}
 	
 	public Map<GregorianCalendar, List<Double> > getVendasTotal() {
@@ -63,16 +64,27 @@ public class Comissionados extends Assalariado {
 	public void registrarVenda(GregorianCalendar cal, double valor) {
 		List<Double> aux;
 		
+		cal.set(Calendar.HOUR, 12);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		
 		try {
 			aux = this.vendas.get(cal);
-			aux.add(valor);
-			vendas.put(cal, aux);
+		
+			if(aux != null) {
+				aux.add(valor);
+				vendas.put(cal, aux);
+			}
+			else {
+				aux = new LinkedList<Double>();
+				aux.add(valor);
+				vendas.put(cal, aux);
+			}
 		}
-		catch ( NullPointerException e ) {
-			aux = new LinkedList<Double>();
-			aux.add(valor);
-			vendas.put(cal, aux);
+		catch (NullPointerException ex) {
+			System.out.println("Vendas " + ex);
 		}
+			 
 	}
 
 	public void setSalarioLiquido(double salario) {
@@ -90,16 +102,24 @@ public class Comissionados extends Assalariado {
 	@Override
 	public void calcularSalarioLiquido(GregorianCalendar cal) {
 		
-		List<Double> temp = this.getVendas(cal);
 		double valorTotalVendas = 0.0;
 		
-		for(int i = 0; i < temp.size(); ++i) {
-			valorTotalVendas += temp.get(i);
+		try {
+			List<Double> temp = this.getVendas(cal);
+			
+			for(int i = 0; i < temp.size(); ++i) {
+				valorTotalVendas += temp.get(i);
+				//System.out.println("vendas total: " + valorTotalVendas);
+			}
 		}
+		catch (NullPointerException ex) {
+			//System.out.println("Sem vendas!");
+		}
+		finally {
+			this.salarioLiquido = this.taxaFixa + this.salarioBruto;
 		
-		super.calcularSalarioLiquido(cal);
-		
-		this.salarioLiquido += this.comissao * valorTotalVendas;
+			this.salarioLiquido += this.comissao * valorTotalVendas;
+		}
 	}
 	
 	//toda vez que rodar a folha de pagamento executar esse metodo
@@ -112,10 +132,12 @@ public class Comissionados extends Assalariado {
 		if(this.pontos[dia] >= 8) {
 			this.salario2Semanas = (this.salarioLiquido/2) * this.TAXA_POR_DIA;
 		}
-		else {
+		else if (this.pontos[dia] != 0){
 			this.salario2Semanas = (this.salarioLiquido/2) * this.TAXA_POR_DIA * this.TAXA_POR_HORA * this.pontos[dia];
 		}
 		
+		//debug
+		//System.out.println("salario: " + this.salario2Semanas );
 	}
 	
 }
